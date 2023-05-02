@@ -5,8 +5,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: url(/src/assets/img/graph-wash.png) repeat 50%;
 }
 
-.top__logo{
+.top__logo {
   width: 100%;
+}
+
+.team {
+  height: 80vh;
 }

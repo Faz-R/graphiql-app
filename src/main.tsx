@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import App from './App.tsx';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import './index.css';
 
 const darkTheme = createTheme({
   palette: {
