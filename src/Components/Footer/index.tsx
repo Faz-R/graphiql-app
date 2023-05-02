@@ -1,12 +1,12 @@
 import { GitHub } from "@mui/icons-material";
 import { Container, Link, Paper, SvgIcon, Toolbar, Typography } from "@mui/material";
-import { ReactComponent as Logo } from '../../assets/rs_school.svg';
+import { ReactComponent as Logo } from '../../assets/icon/rs_school.svg';
 
 const Footer = () => {
   return (
-    <Paper component="footer" color="primary" sx={{position: 'fixed', bottom: 0, borderRadius:0, width: '100%', boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)"}} variant="elevation">
-      <Container>
-        <Toolbar sx={{justifyContent: 'space-between'}}>
+    <Paper component="footer" color="primary" sx={{flex: "0 0 auto", borderRadius:0, width: '100%', boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)"}} variant="elevation">
+      <Container >
+        <Toolbar sx={{justifyContent: 'space-between'}} disableGutters>
           <Typography color="#fff">
             <GitHub color="inherit" fontSize="small" sx={{verticalAlign: 'top'}}></GitHub>
             {` `}

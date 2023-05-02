@@ -1,12 +1,12 @@
-import { Outlet } from 'react-router';
-import Header from '../../Components/Header';
-import Footer from '../../Components/Footer';
+import { Outlet } from "react-router";
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
 const Template = () => {
   return (
     <>
       <Header />
-      <main>
+      <main style={{ flex: "1 0 auto" }}>
         <Outlet />
       </main>
       <Footer />
