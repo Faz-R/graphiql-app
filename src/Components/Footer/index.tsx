@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from '../../assets/rs_school.svg';
 
 const Footer = () => {
   return (
-    <Paper component="footer" sx={{position: 'fixed', bottom: 0, borderRadius:0, width: '100%', backgroundColor: '#1976d2', boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)"}} variant="elevation">
+    <Paper component="footer" color="primary" sx={{position: 'fixed', bottom: 0, borderRadius:0, width: '100%', boxShadow: "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)"}} variant="elevation">
       <Container>
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <Typography color="#fff">
