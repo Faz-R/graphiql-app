@@ -48,8 +48,12 @@ const Header = () => {
             aria-label="text button group"
             color="inherit"
           >
-            <Button color="inherit">Sign In</Button>
-            <Button color="inherit">Sign Up</Button>
+            <Button color="inherit" component={Link} to={"/auth"}>
+              Sign In
+            </Button>
+            <Button color="inherit" component={Link} to={"/registration"}>
+              Sign Up
+            </Button>
           </ButtonGroup>
         </Toolbar>
       </Container>

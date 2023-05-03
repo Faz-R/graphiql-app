@@ -1,16 +1,17 @@
 import { Container } from "@mui/material";
 import Form from "../../Components/Form";
 import { setUser } from "../../store/slices/userSlice";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hooks";
 
-const SignIn = () => {
+const SignUp = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const handleLogin = (email: string, password: string) => {
+  const handleRegister = (email: string, password: string) => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    console.log(auth);
+    createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         console.log(user);
         dispatch(
@@ -18,13 +19,13 @@ const SignIn = () => {
         );
         navigate("/graph");
       })
-      .catch(() => alert("invalid user"));
+      .catch(console.error);
   };
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
-      <Form name="Sign In" handleClick={handleLogin} />
+      <Form name="Sign Up" handleClick={handleRegister} />
     </Container>
   );
 };
 
-export default SignIn;
+export default SignUp;

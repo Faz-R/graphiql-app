@@ -1,13 +1,14 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Template from './Pages/Template';
-import Welcome from './Pages/Welcome';
-import Auth from './Pages/Auth';
-import GraphIQL from './Pages/GraphIQl';
-import Error from './Pages/Error';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Template from "./Pages/Template";
+import Welcome from "./Pages/Welcome";
+import GraphIQL from "./Pages/GraphIQl";
+import Error from "./Pages/Error";
+import SignUp from "./Pages/Registration";
+import SignIn from "./Pages/Auth";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Template />,
     errorElement: <Error />,
     children: [
@@ -16,11 +17,15 @@ const router = createBrowserRouter([
         element: <Welcome />,
       },
       {
-        path: '/auth',
-        element: <Auth />,
+        path: "/auth",
+        element: <SignIn />,
       },
       {
-        path: '/graph',
+        path: "/registration",
+        element: <SignUp />,
+      },
+      {
+        path: "/graph",
         element: <GraphIQL />,
       },
     ],
