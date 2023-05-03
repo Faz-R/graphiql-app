@@ -9,19 +9,37 @@ import {
   InputAdornment,
   IconButton,
   Button,
+  FormHelperText,
 } from "@mui/material";
 import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { REGEXP_PASSWORD } from "./constant";
 
 interface FormProps {
   name: string;
-  handleClick: (email: string, password: string) => void;
+  sendData: (email: string, password: string) => void;
 }
 
-const Form: FC<FormProps> = ({ name, handleClick }) => {
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const Form: FC<FormProps> = ({ name, sendData }) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({ mode: "onSubmit" });
+
+  const onSubmit = (data: FormValues) => {
+    sendData(data.email, data.password);
+    console.log(data);
+  };
+
   return (
     <Paper
       component="form"
@@ -35,27 +53,33 @@ const Form: FC<FormProps> = ({ name, handleClick }) => {
         maxWidth: "500px",
         width: "100%",
       }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Typography variant="h4" component="h2" sx={{ mb: "20px" }}>
         {name}
       </Typography>
       <TextField
-        required
         id="outlined-basic"
         label="E-mail"
         variant="outlined"
         sx={{ width: "100%" }}
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        {...register("email", { required: true })}
       />
       <FormControl sx={{ width: "100%" }} variant="outlined" required>
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          error={!!errors.password?.message}
+          {...register("password", {
+            required: true,
+            pattern: {
+              value: REGEXP_PASSWORD,
+              message:
+                "Minimum 8 symbols, at least one letter, one digit, one special character",
+            },
+          })}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -69,19 +93,12 @@ const Form: FC<FormProps> = ({ name, handleClick }) => {
           }
           label="Password"
         />
-        {/* <FormHelperText>
-        Minimum 8 symbols, at least one letter, one digit, one special
-        character
-      </FormHelperText> */}
+        <FormHelperText>{errors.password?.message}</FormHelperText>
       </FormControl>
       <Button
         type="submit"
         variant="outlined"
         sx={{ mt: "20px", width: "max-content" }}
-        onClick={(e) => {
-          e.preventDefault();
-          handleClick(email, password);
-        }}
       >
         Submit
       </Button>
