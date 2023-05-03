@@ -9,9 +9,14 @@ import {
 import { ReactComponent as GraphIcon } from "../../assets/icon/graphql.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { removeUser } from "../../store/slices/userSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 const Header = () => {
   const [scroll, setScroll] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isAuth } = useAuth();
   useEffect(() => {
     window.onscroll = () => {
       if (window.scrollY > 0) {
@@ -43,18 +48,29 @@ const Header = () => {
               }}
             />
           </Link>
-          <ButtonGroup
-            variant="text"
-            aria-label="text button group"
-            color="inherit"
-          >
-            <Button color="inherit" component={Link} to={"/auth"}>
-              Sign In
+          {isAuth ? (
+            <Button
+              color="inherit"
+              onClick={() => {
+                dispatch(removeUser());
+              }}
+            >
+              Log Out
             </Button>
-            <Button color="inherit" component={Link} to={"/registration"}>
-              Sign Up
-            </Button>
-          </ButtonGroup>
+          ) : (
+            <ButtonGroup
+              variant="text"
+              aria-label="text button group"
+              color="inherit"
+            >
+              <Button color="inherit" component={Link} to={"/auth"}>
+                Sign In
+              </Button>
+              <Button color="inherit" component={Link} to={"/registration"}>
+                Sign Up
+              </Button>
+            </ButtonGroup>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

@@ -23,7 +23,7 @@ const SignUp = () => {
   };
   return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
-      <Form name="Sign Up" handleClick={handleRegister} />
+      <Form name="Sign Up" sendData={handleRegister} />
     </Container>
   );
 };
