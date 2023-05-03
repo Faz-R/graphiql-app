@@ -1,11 +1,4 @@
-import {
-  Button,
-  Container,
-  Grid,
-  Link,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Grid, Link, Typography } from "@mui/material";
 import "./index.css";
 import logo from "../../assets/img/GraphQ-logo.png";
 import PersonCard from "../../Components/PersonCard";
