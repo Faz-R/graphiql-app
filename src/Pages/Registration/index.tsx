@@ -1,29 +1,50 @@
-import { Container } from "@mui/material";
+import { Alert, Container, Snackbar } from "@mui/material";
 import Form from "../../Components/Form";
-import { setUser } from "../../store/slices/userSlice";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, registerWithEmailAndPassword } from "../../firebase";
+import { useEffect, useState } from "react";
 
 const SignUp = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [user, loading, error] = useAuthState(auth);
   const handleRegister = (email: string, password: string) => {
-    const auth = getAuth();
-    console.log(auth);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        console.log(user);
-        dispatch(
-          setUser({ email: user.email, id: user.uid, token: user.refreshToken })
-        );
+    registerWithEmailAndPassword(email, password)
+      .then(() => {
         navigate("/graph");
       })
-      .catch(console.error);
+      .catch((error: Error) => {
+        if (error.message.includes("email-already-in-use")) {
+          setErrorMessage("Email already in use");
+        } else {
+          setErrorMessage(error.message);
+        }
+        setOpen(true);
+      });
   };
-  return (
+
+  const handleClose = () => {
+    setOpen(false);
+    setErrorMessage("");
+  };
+
+  useEffect(() => {
+    if (user) {
+      <>{navigate("/")}</>;
+    }
+  });
+  return user ? (
+    <Navigate to="/graph" />
+  ) : (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
-      <Form name="Sign Up" sendData={handleRegister} />
+      <Form title="Sign Up" sendData={handleRegister} />
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

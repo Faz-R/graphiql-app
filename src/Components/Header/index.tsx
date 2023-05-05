@@ -5,18 +5,18 @@ import {
   Container,
   SvgIcon,
   Toolbar,
+  Typography,
 } from "@mui/material";
 import { ReactComponent as GraphIcon } from "../../assets/icon/graphql.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import { removeUser } from "../../store/slices/userSlice";
-import { useAppDispatch } from "../../store/hooks";
+import { auth, logout } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { MailOutline } from "@mui/icons-material";
 
 const Header = () => {
   const [scroll, setScroll] = useState(false);
-  const dispatch = useAppDispatch();
-  const { isAuth } = useAuth();
+  const [user, loading, error] = useAuthState(auth);
   useEffect(() => {
     window.onscroll = () => {
       if (window.scrollY > 0) {
@@ -48,25 +48,49 @@ const Header = () => {
               }}
             />
           </Link>
-          {isAuth ? (
-            <Button
-              color="inherit"
-              onClick={() => {
-                dispatch(removeUser());
-              }}
-            >
-              Log Out
-            </Button>
+          {user ? (
+            <>
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "5px",
+                  mr: "20px",
+                }}
+              >
+                <MailOutline></MailOutline>
+                {user.email}
+              </Typography>
+              <Button
+                variant="contained"
+                color="inherit"
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Log Out
+              </Button>
+            </>
           ) : (
             <ButtonGroup
               variant="text"
               aria-label="text button group"
               color="inherit"
             >
-              <Button color="inherit" component={Link} to={"/auth"}>
+              <Button
+                color="inherit"
+                variant="contained"
+                component={Link}
+                to={"/auth"}
+              >
                 Sign In
               </Button>
-              <Button color="inherit" component={Link} to={"/registration"}>
+              <Button
+                color="inherit"
+                variant="contained"
+                component={Link}
+                to={"/register"}
+              >
                 Sign Up
               </Button>
             </ButtonGroup>

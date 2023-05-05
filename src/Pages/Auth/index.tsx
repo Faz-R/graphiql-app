@@ -1,48 +1,45 @@
 import { Alert, Container, Snackbar } from "@mui/material";
 import Form from "../../Components/Form";
-import { setUser } from "../../store/slices/userSlice";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuthState as UseAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
 
 const SignIn = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [user, loading, error] = UseAuthState(auth);
 
   const handleLogin = (email: string, password: string) => {
-    const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
-      .then(({ user }) => {
-        setOpen(true);
-        console.log(user);
-        dispatch(
-          setUser({ email: user.email, id: user.uid, token: user.refreshToken })
-        );
+      .then(() => {
         navigate("/graph");
       })
-      .catch(() => setOpen(true));
+      .catch((error: Error) => {
+        if (error.message.includes("user-not-found")) {
+          setErrorMessage("User not found");
+        } else {
+          setErrorMessage(error.message);
+        }
+        setOpen(true);
+      });
   };
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
+  const handleClose = () => {
     setOpen(false);
   };
 
-  return (
+  return user ? (
+    <Navigate to="/graph" />
+  ) : (
     <>
       <Container sx={{ display: "flex", justifyContent: "center" }}>
-        <Form name="Sign In" sendData={handleLogin} />
+        <Form title="Sign In" sendData={handleLogin} isAuth={true} />
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            User don't exist!
+            {errorMessage}
           </Alert>
         </Snackbar>
       </Container>
