@@ -26,7 +26,6 @@ interface FormProps {
 interface FormValues {
   email: string;
   password: string;
-  name: string;
 }
 
 const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
@@ -40,8 +39,7 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
   } = useForm<FormValues>({ mode: "onSubmit" });
 
   const onSubmit = (data: FormValues) => {
-    sendData(data.email, data.password, data?.name);
-    console.log(data);
+    sendData(data.email, data.password);
   };
 
   return (
@@ -62,18 +60,6 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
       <Typography variant="h4" component="h2" sx={{ mb: "20px" }}>
         {title}
       </Typography>
-      {!isAuth && (
-        <TextField
-          id="name"
-          label="Name"
-          variant="outlined"
-          sx={{ width: "100%" }}
-          type="text"
-          defaultValue="Name"
-          autoComplete="name"
-          {...register("name", { required: true })}
-        />
-      )}
       <TextField
         id="outlined-basic"
         label="E-mail"
