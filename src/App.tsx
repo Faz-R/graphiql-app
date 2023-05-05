@@ -5,6 +5,7 @@ import GraphIQL from "./Pages/GraphIQl";
 import Error from "./Pages/Error";
 import SignUp from "./Pages/Registration";
 import SignIn from "./Pages/Auth";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +19,28 @@ const router = createBrowserRouter([
       },
       {
         path: "/auth",
-        element: <SignIn />,
+        element: (
+          <ProtectedRoute route="/graph">
+            <SignIn />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/register",
-        element: <SignUp />,
+        element: (
+          <ProtectedRoute route="/graph">
+            <SignUp />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/graph",
-        element: <GraphIQL />,
+
+        element: (
+          <ProtectedRoute route="/" isOtherWay={false}>
+            <GraphIQL />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

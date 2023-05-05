@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ReactComponent as GraphIcon } from "../../assets/icon/graphql.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, logout } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -16,7 +16,8 @@ import { MailOutline } from "@mui/icons-material";
 
 const Header = () => {
   const [scroll, setScroll] = useState(false);
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
   useEffect(() => {
     window.onscroll = () => {
       if (window.scrollY > 0) {
@@ -61,15 +62,30 @@ const Header = () => {
                 <MailOutline></MailOutline>
                 {user.email}
               </Typography>
-              <Button
-                variant="contained"
+              <ButtonGroup
+                variant="text"
+                aria-label="text button group"
                 color="inherit"
-                onClick={() => {
-                  logout();
-                }}
               >
-                Log Out
-              </Button>
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  onClick={() => {
+                    navigate("/graph");
+                  }}
+                >
+                  Main Page
+                </Button>
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  Log Out
+                </Button>
+              </ButtonGroup>
             </>
           ) : (
             <ButtonGroup

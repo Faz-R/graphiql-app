@@ -6,6 +6,8 @@ import App from "./App.tsx";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import "./index.css";
 import "./firebase.ts";
+import "firebase/firestore";
+import "firebase/auth";
 
 const darkTheme = createTheme({
   palette: {

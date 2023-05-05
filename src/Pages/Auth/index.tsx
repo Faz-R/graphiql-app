@@ -1,19 +1,16 @@
 import { Alert, Container, Snackbar } from "@mui/material";
 import Form from "../../Components/Form";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuthState as UseAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
+import { logInWithEmailAndPassword } from "../../firebase";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [user, loading, error] = UseAuthState(auth);
 
   const handleLogin = (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
+    logInWithEmailAndPassword(email, password)
       .then(() => {
         navigate("/graph");
       })
@@ -31,9 +28,7 @@ const SignIn = () => {
     setOpen(false);
   };
 
-  return user ? (
-    <Navigate to="/graph" />
-  ) : (
+  return (
     <>
       <Container sx={{ display: "flex", justifyContent: "center" }}>
         <Form title="Sign In" sendData={handleLogin} isAuth={true} />

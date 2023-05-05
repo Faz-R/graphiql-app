@@ -1,6 +1,6 @@
 import { Alert, Container, Snackbar } from "@mui/material";
 import Form from "../../Components/Form";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, registerWithEmailAndPassword } from "../../firebase";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const handleRegister = (email: string, password: string) => {
     registerWithEmailAndPassword(email, password)
       .then(() => {
@@ -35,9 +35,7 @@ const SignUp = () => {
       <>{navigate("/")}</>;
     }
   });
-  return user ? (
-    <Navigate to="/graph" />
-  ) : (
+  return (
     <Container sx={{ display: "flex", justifyContent: "center" }}>
       <Form title="Sign Up" sendData={handleRegister} />
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

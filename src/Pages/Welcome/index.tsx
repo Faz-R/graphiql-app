@@ -1,13 +1,21 @@
-import { Button, Container, Grid, Link, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography, Link } from "@mui/material";
 import "./index.css";
 import logo from "../../assets/img/GraphQ-logo.png";
 import PersonCard from "../../Components/PersonCard";
 import AlexPhoto from "../../assets/img/Alex.jpg";
 import RifatPhoto from "../../assets/img/Rifat.jpg";
 import JeniaPhoto from "../../assets/img/Jenia.jpeg";
+import { auth } from "../../firebase";
+import { Link as ReactLink } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Loader from "../../Components/Loader";
 
 const Welcome = () => {
-  return (
+  const [user, loading, error] = useAuthState(auth);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <section className="top">
         <Container>
@@ -30,7 +38,15 @@ const Welcome = () => {
                 }
                 , created an application for working with graphQL requests.
               </Typography>
-              <Button variant="contained">Sing Up</Button>
+              {user ? (
+                <Button variant="contained" component={ReactLink} to="/graph">
+                  Start Using
+                </Button>
+              ) : (
+                <Button variant="contained" component={ReactLink} to="/auth">
+                  Sing In
+                </Button>
+              )}
             </Grid>
             <Grid item xs={4}>
               <img
