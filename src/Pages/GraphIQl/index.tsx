@@ -1,11 +1,12 @@
 import { Container } from "@mui/material";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { auth } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const GraphIQL = () => {
-  const { isAuth } = useAuth();
-  return !isAuth ? (
-    <Navigate to="/auth" />
+  const [user, loading, error] = useAuthState(auth);
+  return !user ? (
+    <Navigate to="/" />
   ) : (
     <Container>
       <h2>The most difficult content must be here</h2>
