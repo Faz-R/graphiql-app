@@ -7,8 +7,6 @@ import {
 } from "firebase/auth";
 import {
   getFirestore,
-  collection,
-  addDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -29,14 +27,7 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 const registerWithEmailAndPassword = async (email: string, password: string) => {
-  const res = await createUserWithEmailAndPassword(auth, email, password);
-  const user = res.user;
-  await addDoc(collection(db, "users"), {
-    uid: user.uid,
-    name,
-    authProvider: "local",
-    email,
-  });
+  await createUserWithEmailAndPassword(auth, email, password);
 };
 
 const logout = () => {
