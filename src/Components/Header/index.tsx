@@ -13,10 +13,17 @@ import { useEffect, useState } from "react";
 import { auth, logout } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { MailOutline } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const [scroll, setScroll] = useState(false);
   const [user] = useAuthState(auth);
+  const { i18n, t } = useTranslation();
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+  };
+
   const navigate = useNavigate();
   useEffect(() => {
     window.onscroll = () => {
@@ -49,6 +56,24 @@ const Header = () => {
               }}
             />
           </Link>
+          <Button
+            variant="contained"
+            color="inherit"
+            onClick={() => {
+              changeLanguage("ru");
+            }}
+          >
+            ru
+          </Button>
+          <Button
+            variant="contained"
+            color="inherit"
+            onClick={() => {
+              changeLanguage("en");
+            }}
+          >
+            en
+          </Button>
           {user ? (
             <>
               <Typography
@@ -83,7 +108,7 @@ const Header = () => {
                     logout();
                   }}
                 >
-                  Log Out
+                  {t("logout")}
                 </Button>
               </ButtonGroup>
             </>

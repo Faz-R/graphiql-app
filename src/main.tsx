@@ -8,6 +8,7 @@ import "./index.css";
 import "./firebase.ts";
 import "firebase/firestore";
 import "firebase/auth";
+import "./18n.ts";
 
 const darkTheme = createTheme({
   palette: {
