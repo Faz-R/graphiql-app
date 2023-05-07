@@ -1,3 +1,21 @@
 {
-  "logout": "Log Out"
+  "logout": "Log Out",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "password": "Password",
+  "email": "Email",
+  "mainPage": "Main page",
+  "userNotFound": "User not found",
+  "team": "Our team",
+  "Alex": "Kazlou Aliaksei",
+  "Rifat": "Fazlyev Rifat",
+  "Yaheni": "Basalai Yauheni",
+  "start": "Go to use",
+  "graphFirstPart": "GraphiQL is the GraphQL integrated development environment (IDE). It is a powerful tool you will use often while building bwebsites. It offers syntax highlighting, intellisense autocompletion, automatic documentation, and much more. Our team, as part of the final assignment for the React course from the",
+  "graphSecondPart": "created an application for working with graphQL requests.",
+  "passwordError": "Minimum 8 symbols, at least one letter, one digit, one special character",
+  "dontHaveAccount": "Don't have an account?",
+  "register": "Register now.",
+  "submit": "submit",
+  "emailInUse": "Email already in use"
 }
