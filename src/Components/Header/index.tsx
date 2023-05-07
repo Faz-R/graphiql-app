@@ -34,6 +34,7 @@ const Header = () => {
       }
     };
   }, []);
+
   return (
     <AppBar position="sticky">
       <Container>
@@ -56,24 +57,6 @@ const Header = () => {
               }}
             />
           </Link>
-          <Button
-            variant="contained"
-            color="inherit"
-            onClick={() => {
-              changeLanguage("ru");
-            }}
-          >
-            ru
-          </Button>
-          <Button
-            variant="contained"
-            color="inherit"
-            onClick={() => {
-              changeLanguage("en");
-            }}
-          >
-            en
-          </Button>
           {user ? (
             <>
               <Typography
@@ -99,7 +82,7 @@ const Header = () => {
                     navigate("/graph");
                   }}
                 >
-                  Main Page
+                  {t("mainPage")}
                 </Button>
                 <Button
                   variant="contained"
@@ -124,7 +107,7 @@ const Header = () => {
                 component={Link}
                 to={"/auth"}
               >
-                Sign In
+                {t("signIn")}
               </Button>
               <Button
                 color="inherit"
@@ -132,10 +115,20 @@ const Header = () => {
                 component={Link}
                 to={"/register"}
               >
-                Sign Up
+                {t("signUp")}
               </Button>
             </ButtonGroup>
           )}
+          <Button
+            variant="contained"
+            color="inherit"
+            sx={{ ml: "20px" }}
+            onClick={() => {
+              changeLanguage(i18n.language === "en" ? "ru" : "en");
+            }}
+          >
+            {i18n.language === "en" ? "ru" : "en"}
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>

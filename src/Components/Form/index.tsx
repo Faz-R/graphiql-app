@@ -16,6 +16,7 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { REGEXP_PASSWORD } from "./constant";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface FormProps {
   title: string;
@@ -29,6 +30,7 @@ interface FormValues {
 }
 
 const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -62,16 +64,19 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
       </Typography>
       <TextField
         id="outlined-basic"
-        label="E-mail"
+        label={t("email")}
         variant="outlined"
         sx={{ width: "100%" }}
         type="email"
+        required
         defaultValue="example@mail.com"
         autoComplete="email"
         {...register("email", { required: true })}
       />
       <FormControl sx={{ width: "100%" }} variant="outlined" required>
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <InputLabel htmlFor="outlined-adornment-password">
+          {t("password")}
+        </InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
@@ -82,8 +87,7 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
             required: true,
             pattern: {
               value: REGEXP_PASSWORD,
-              message:
-                "Minimum 8 symbols, at least one letter, one digit, one special character",
+              message: `${t("passwordError")}`,
             },
           })}
           endAdornment={
@@ -97,17 +101,16 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
               </IconButton>
             </InputAdornment>
           }
-          label="Password"
+          label={t("password")}
         />
         <FormHelperText>{errors.password?.message}</FormHelperText>
       </FormControl>
       {isAuth && (
         <Typography>
-          Don't have an account?{" "}
+          {t("dontHaveAccount")}{" "}
           <Link component={RouterLink} to="/register" underline="none">
-            Register
-          </Link>{" "}
-          now.
+            {t("register")}
+          </Link>
         </Typography>
       )}
       <Button
@@ -115,7 +118,7 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
         variant="outlined"
         sx={{ mt: "20px", width: "max-content" }}
       >
-        Submit
+        {t("submit")}
       </Button>
     </Paper>
   );
