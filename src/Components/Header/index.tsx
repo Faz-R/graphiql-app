@@ -13,10 +13,17 @@ import { useEffect, useState } from "react";
 import { auth, logout } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { MailOutline } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const [scroll, setScroll] = useState(false);
   const [user] = useAuthState(auth);
+  const { i18n, t } = useTranslation();
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+  };
+
   const navigate = useNavigate();
   useEffect(() => {
     window.onscroll = () => {
@@ -27,6 +34,7 @@ const Header = () => {
       }
     };
   }, []);
+
   return (
     <AppBar position="sticky">
       <Container>
@@ -74,7 +82,7 @@ const Header = () => {
                     navigate("/graph");
                   }}
                 >
-                  Main Page
+                  {t("mainPage")}
                 </Button>
                 <Button
                   variant="contained"
@@ -83,7 +91,7 @@ const Header = () => {
                     logout();
                   }}
                 >
-                  Log Out
+                  {t("logout")}
                 </Button>
               </ButtonGroup>
             </>
@@ -99,7 +107,7 @@ const Header = () => {
                 component={Link}
                 to={"/auth"}
               >
-                Sign In
+                {t("signIn")}
               </Button>
               <Button
                 color="inherit"
@@ -107,10 +115,20 @@ const Header = () => {
                 component={Link}
                 to={"/register"}
               >
-                Sign Up
+                {t("signUp")}
               </Button>
             </ButtonGroup>
           )}
+          <Button
+            variant="contained"
+            color="inherit"
+            sx={{ ml: "20px" }}
+            onClick={() => {
+              changeLanguage(i18n.language === "en" ? "ru" : "en");
+            }}
+          >
+            {i18n.language === "en" ? "ru" : "en"}
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>
