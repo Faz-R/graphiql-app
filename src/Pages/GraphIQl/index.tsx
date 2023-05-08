@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
-import RequestField from "../../Components/RequestField";
+import GraphiQLField from "../../Components/GraphiQLField";
 
 const GraphIQL = () => {
   const [user] = useAuthState(auth);
@@ -17,7 +17,7 @@ const GraphIQL = () => {
   return (
     <Container>
       <h2>The most difficult content must be here</h2>
-      <RequestField />
+      <GraphiQLField />
     </Container>
   );
 };
