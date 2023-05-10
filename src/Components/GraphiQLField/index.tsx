@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Grid, Container } from "@mui/material";
 import RequestField from "../RequestField";
-import ResponseField from "../ResponseField";
+
+import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
 
 function GraphiQLField() {
   const [data, setData] = useState("");
@@ -11,7 +12,7 @@ function GraphiQLField() {
       <Container maxWidth="xl">
         <Grid container spacing={2}>
           <RequestField setData={setData} />
-          <ResponseField data={data} />
+          {data ? <ResponseFieldWithApollo responseText={data} /> : ""}
         </Grid>
       </Container>
     </>

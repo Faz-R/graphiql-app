@@ -8,22 +8,9 @@ interface IrequestField {
 
 function RequestField({ setData }: IrequestField) {
   const [request, setRequest] = useState("");
-  const url = "https://rickandmortyapi.com/graphql";
 
-  const resp = async (data = '') => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query: data }),
-    });
-
-    return await response.json();
-  };
-
-  const giveAnswer = () => {
-    resp(request).then((r: string) => setData(r));
+  const handleClick = () => {
+    setData(request);
   };
 
   return (
@@ -33,7 +20,7 @@ function RequestField({ setData }: IrequestField) {
           variant="contained"
           sx={{ p: "10px", pr: "50px", pl: "50px" }}
           aria-label="directions"
-          onClick={giveAnswer}
+          onClick={handleClick}
           endIcon={<SendIcon />}>
           Send
         </Button>
