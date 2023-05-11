@@ -9,6 +9,8 @@ import "./firebase.ts";
 import "firebase/firestore";
 import "firebase/auth";
 import "./18n.ts";
+import { ApolloProvider } from "@apollo/client";
+import client from "./apollo/client.ts";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,7 +23,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <App />
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
       </ThemeProvider>
     </Provider>
   </StrictMode>
