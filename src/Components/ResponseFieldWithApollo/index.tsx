@@ -4,14 +4,23 @@ import { useQuery, gql } from "@apollo/client";
 
 interface IResponseField {
   responseText: string;
+  variables: string;
 }
 
-function ResponseFieldWithApollo({ responseText }: IResponseField) {
+function ResponseFieldWithApollo({ responseText,variables }: IResponseField) {
   const DATA_RESPONSE = gql`
     ${responseText}
   `;
+  const VARIABLES =JSON.parse(variables);
 
-  const { loading, error, data } = useQuery(DATA_RESPONSE);
+  const { loading, error, data } = useQuery(DATA_RESPONSE, {
+    variables: VARIABLES/*  { "page": 1,
+  "filter": {
+    "name": "morty"
+  }  }*/
+  });
+
+  console.log('variables', VARIABLES)
 
   if (loading) {
     return <CircularProgress />;
