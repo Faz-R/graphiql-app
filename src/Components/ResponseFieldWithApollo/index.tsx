@@ -7,20 +7,22 @@ interface IResponseField {
   variables: string;
 }
 
-function ResponseFieldWithApollo({ responseText,variables }: IResponseField) {
+function ResponseFieldWithApollo({ responseText, variables }: IResponseField) {
   const DATA_RESPONSE = gql`
     ${responseText}
   `;
-  const VARIABLES =JSON.parse(variables);
+  let varToJson: object | undefined;
+  let errorMessage = "";
+
+  try {
+    if (variables) varToJson = JSON.parse(variables);
+  } catch (err) {
+    errorMessage = "enter the valid variables";
+  }
 
   const { loading, error, data } = useQuery(DATA_RESPONSE, {
-    variables: VARIABLES/*  { "page": 1,
-  "filter": {
-    "name": "morty"
-  }  }*/
+    variables: varToJson,
   });
-
-  console.log('variables', VARIABLES)
 
   if (loading) {
     return <CircularProgress />;
@@ -28,11 +30,17 @@ function ResponseFieldWithApollo({ responseText,variables }: IResponseField) {
 
   if (error) {
     return <h3>Error {error.message}</h3>;
-  }  
+  }
 
   return (
     <Grid item xs={5} mr={10}>
-      {data ? <pre className="pre">{JSON.stringify(data, null, 2)}</pre> : ""}
+      {errorMessage ? (
+        <div>{errorMessage}</div>
+      ) : data ? (
+        <pre className="pre">{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        ""
+      )}
     </Grid>
   );
 }

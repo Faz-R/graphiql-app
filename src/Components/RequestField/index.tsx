@@ -1,33 +1,19 @@
-import { Button, TextField, Box, Grid } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import { Dispatch, useState, SetStateAction } from "react";
+import { TextField, Box, Grid } from "@mui/material";
+import { DEF_VALUE_REQUEST } from "../GraphiQLField/constants";
+import { Dispatch, SetStateAction } from "react";
 
 interface IrequestField {
   setData: Dispatch<SetStateAction<string>>;
 }
 
 function RequestField({ setData }: IrequestField) {
-  const [request, setRequest] = useState("");
-
-  const handleClick = () => {
-    setData(request);
-  };
-
   return (
     <>
       <Grid item xs={6}>
-        <Button
-          variant="contained"
-          sx={{ p: "10px", pr: "50px", pl: "50px" }}
-          aria-label="directions"
-          onClick={handleClick}
-          endIcon={<SendIcon />}>
-          Send
-        </Button>
         <Box
           component="form"
           sx={{
-            "& .MuiTextField-root": { m: 1, width: "55ch" },
+            "& .MuiTextField-root": { m: 1, width: "50ch" },
           }}
           noValidate
           autoComplete="off">
@@ -38,9 +24,9 @@ function RequestField({ setData }: IrequestField) {
               multiline
               minRows={10}
               variant="outlined"
-              value={request}
+              defaultValue={DEF_VALUE_REQUEST}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setRequest(event.target.value);
+                setData(event.target.value);
               }}
             />
           </div>
