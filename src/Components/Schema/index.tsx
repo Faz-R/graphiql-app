@@ -12,6 +12,12 @@ import {
 import { useQuery } from '@apollo/client';
 import { SCHEMA } from '../../apollo/schema';
 
+type SchemaType = {
+  name: string;
+  description: string;
+  type: { name: string };
+};
+
 const Schema: React.FC<{ name: string }> = ({ name }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -30,15 +36,7 @@ const Schema: React.FC<{ name: string }> = ({ name }) => {
           <Typography variant='h5'>{data.__type.name}</Typography>
           <List>
             {data.__type.fields.map(
-              ({
-                name,
-                description,
-                type,
-              }: {
-                name: string;
-                description: string;
-                type: { name: string };
-              }) => (
+              ({ name, description, type }: SchemaType) => (
                 <ListItem key={name}>
                   <ListItemButton>
                     <ListItemText
