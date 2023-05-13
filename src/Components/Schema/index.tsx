@@ -7,53 +7,59 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
-  Divider,
   Button,
 } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { SCHEMA } from '../../apollo/schema';
 
-const Schema = () => {
+const Schema: React.FC<{ name: string }> = ({ name }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { data } = useQuery(SCHEMA);
+  const { data } = useQuery(SCHEMA, {
+    variables: { name },
+  });
   console.log(data);
 
   return (
     <>
+      <Button variant='contained' onClick={() => setIsOpen(!isOpen)}>
+        Docs
+      </Button>
       {isOpen && (
         <Box>
-          <Typography variant='h5'>{data.schema.list.name}</Typography>
+          <Typography variant='h5'>{data.__type.name}</Typography>
           <List>
-            {data.schema.list.fields.map(
+            {data.__type.fields.map(
               ({
                 name,
                 description,
+                type,
               }: {
                 name: string;
                 description: string;
+                type: { name: string };
               }) => (
-                <>
-                  <ListItem key={name}>
-                    <ListItemButton>
-                      <ListItemText
-                        primary={<Typography variant='h5'>{name}</Typography>}
-                        secondary={
-                          <Typography variant='body1'>{description}</Typography>
-                        }
-                      ></ListItemText>
-                    </ListItemButton>
-                  </ListItem>
-                  <Divider component='li' />
-                </>
+                <ListItem key={name}>
+                  <ListItemButton>
+                    <ListItemText
+                      primary={
+                        <Typography variant='h5'>
+                          {`${name}: ${type.name ?? ''}`}
+                        </Typography>
+                      }
+                      secondary={
+                        <Typography variant='subtitle1'>
+                          {description}
+                        </Typography>
+                      }
+                    ></ListItemText>
+                  </ListItemButton>
+                </ListItem>
               )
             )}
           </List>
         </Box>
       )}
-      <Button variant='contained' onClick={() => setIsOpen(!isOpen)}>
-        Docs
-      </Button>
     </>
   );
 };

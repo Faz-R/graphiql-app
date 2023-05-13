@@ -1,13 +1,15 @@
 import { gql } from '@apollo/client';
 
 export const SCHEMA = gql`
-  query Schema {
-    schema: __schema {
-      list: queryType {
+  query getSchema($name: String!) {
+    __type(name: $name) {
+      name
+      description
+      fields {
         name
-        fields {
+        description
+        type {
           name
-          description
         }
       }
     }
