@@ -19,7 +19,7 @@ const GraphIQL = () => {
     <Container>
       <h2>The most difficult content must be here</h2>
       <GraphiQLField />
-      <Schema name='Query' />
+      <Schema />
     </Container>
   );
 };
