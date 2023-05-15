@@ -2,15 +2,17 @@ import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
-import Button from "@mui/material/Button";
+
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { Container, TextField } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 const drawerBleeding = 0;
 
 interface Props {
+  setOpenParent: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
   setVariables: Dispatch<SetStateAction<string>>;
   window?: () => Window;
 }
@@ -27,20 +29,17 @@ const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
 }));
 
-const DEF_VALUE = `{
-  "page": 1,
-  "filter": {
-    "name": "morty"
-  }
-}`;
-
 export default function VariablesField(props: Props) {
   const { window } = props;
-  const [open, setOpen] = useState(false);
-  //const [value, setValue] = useState("");
+  const [open, setOpen] = useState(props.open);
+
+  useEffect(() => {
+    setOpen(props.open);
+  }, [props.open]);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
+    props.setOpenParent(newOpen);
   };
 
   const container =
@@ -57,9 +56,7 @@ export default function VariablesField(props: Props) {
           },
         }}
       />
-      <Box sx={{ textAlign: "left", pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Variables</Button>
-      </Box>
+
       <SwipeableDrawer
         container={container}
         anchor="bottom"
@@ -92,11 +89,10 @@ export default function VariablesField(props: Props) {
               <div>
                 <TextField
                   id="outlined-multiline-flexible"
-                  label="enter request"
+                  label="enter variables"
                   multiline
                   minRows={9}
                   variant="outlined"
-                  //defaultValue={DEF_VALUE}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     props.setVariables(event.target.value);
                   }}
@@ -105,16 +101,6 @@ export default function VariablesField(props: Props) {
             </Box>
           </Container>
         </StyledBox>
-        {/* <StyledBox
-          sx={{
-            px: 2,
-            pb: 2,
-            height: '100%',
-            overflow: 'auto',
-          }}
-        >
-          <Skeleton variant="rectangular" height="100%" />
-        </StyledBox> */}
       </SwipeableDrawer>
     </Root>
   );

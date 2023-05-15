@@ -22,6 +22,8 @@ function ResponseFieldWithApollo({ responseText, variables }: IResponseField) {
 
   const { loading, error, data } = useQuery(DATA_RESPONSE, {
     variables: varToJson,
+    errorPolicy: "all",
+    onError: (error) => console.log(error),
   });
 
   if (loading) {
