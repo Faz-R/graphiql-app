@@ -1,18 +1,17 @@
+import { useContext } from 'react';
 import { ListItemButton, ListItemText, Typography } from '@mui/material';
-import type { SchemaNodeProps } from '../schemaTypes';
+import SchemaContext from '../context/SchemaContext';
+import type { SchemaField } from '../schemaTypes';
 
-const SchemaNode: React.FC<SchemaNodeProps> = ({
+const SchemaNode: React.FC<SchemaField & { level: number }> = ({
   name,
   description,
   type,
-  addQueryName,
   level,
 }) => {
+  const { setSchema } = useContext(SchemaContext);
   return (
-    <ListItemButton
-      divider
-      onClick={() => type.name && addQueryName(type.name, level)}
-    >
+    <ListItemButton divider onClick={() => setSchema(type.name, level)}>
       <ListItemText
         primary={
           <Typography variant='body2'>
