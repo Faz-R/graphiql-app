@@ -1,13 +1,26 @@
 import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
+import { auth, logout } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GraphiQLField from "../../Components/GraphiQLField";
 
 const GraphIQL = () => {
+  const [token, setToken] = useState("");
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  user
+    ?.getIdToken(false)
+    .then((idToken) => {
+      if (!token) {
+        setToken(idToken);
+      } else if (token !== idToken) {
+        logout();
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   useEffect(() => {
     if (!user) {
@@ -16,7 +29,6 @@ const GraphIQL = () => {
   }, [navigate, user]);
   return (
     <Container>
-      <h2>The most difficult content must be here</h2>
       <GraphiQLField />
     </Container>
   );

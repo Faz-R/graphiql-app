@@ -21,7 +21,8 @@ function RequestField({ setData }: IrequestField) {
           sx={{ p: "10px", pr: "50px", pl: "50px" }}
           aria-label="directions"
           onClick={handleClick}
-          endIcon={<SendIcon />}>
+          endIcon={<SendIcon />}
+        >
           Send
         </Button>
         <Box
@@ -30,7 +31,8 @@ function RequestField({ setData }: IrequestField) {
             "& .MuiTextField-root": { m: 1, width: "55ch" },
           }}
           noValidate
-          autoComplete="off">
+          autoComplete="off"
+        >
           <div>
             <TextField
               id="outlined-multiline-flexible"
@@ -40,7 +42,9 @@ function RequestField({ setData }: IrequestField) {
               variant="outlined"
               value={request}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setRequest(event.target.value);
+                setRequest(
+                  JSON.parse(JSON.stringify(event.target.value, null, 2))
+                );
               }}
             />
           </div>

@@ -13,9 +13,14 @@ interface Person {
 
 const PersonCard = ({ image, name }: Person) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: "100%" }}>
       <CardActionArea>
-        <CardMedia component="img" height="300" image={image} alt={name} />
+        <CardMedia
+          component="img"
+          sx={{ maxHeight: "300px", height: "300px" }}
+          image={image}
+          alt={name}
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name}
