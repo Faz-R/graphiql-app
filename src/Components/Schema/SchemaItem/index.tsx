@@ -3,11 +3,12 @@ import { Box, Typography, CircularProgress, List } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { SCHEMA } from '../../../apollo/schema';
 import SchemaNode from '../SchemaNode';
-import type { SchemaListType } from '../schemaTypes';
+import type { SchemaList, SchemaItemProps } from '../schemaTypes';
 
-const SchemaItem: React.FC<{ queryName: string; getList?: () => void }> = ({
+const SchemaItem: React.FC<SchemaItemProps> = ({
   queryName,
-  getList,
+  level,
+  addQueryName,
 }) => {
   const { loading, data } = useQuery(SCHEMA, {
     variables: { name: queryName },
@@ -15,7 +16,7 @@ const SchemaItem: React.FC<{ queryName: string; getList?: () => void }> = ({
 
   if (loading) return <CircularProgress />;
 
-  const { name, description, fields } = data.__type as SchemaListType;
+  const { name, description, fields } = data.__type as SchemaList;
 
   return (
     <Box>
@@ -26,7 +27,12 @@ const SchemaItem: React.FC<{ queryName: string; getList?: () => void }> = ({
       {fields && (
         <List>
           {fields.map((field) => (
-            <SchemaNode key={field.name} {...field} />
+            <SchemaNode
+              key={field.name}
+              {...field}
+              addQueryName={addQueryName}
+              level={level}
+            />
           ))}
         </List>
       )}

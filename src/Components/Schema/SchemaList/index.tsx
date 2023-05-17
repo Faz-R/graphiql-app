@@ -1,26 +1,35 @@
 import { useState } from 'react';
 import { Stack, Divider } from '@mui/material';
 import SchemaItem from '../SchemaItem';
-// import type { SchemaListType } from '../schemaTypes';
 
 const SchemaList = () => {
-  const [listNames, setListNames] = useState<string[]>([]);
+  const [listQueryNames, setListQueryNames] = useState<string[]>(['Query']);
 
-  // const handleClick = (name: string, index: number)=>{
-  //     setList(prevList=> [...prevList, ])
-  // }
+  const addQueryName = (name: string, level: number) => {
+    let newList: string[];
+    if (level === listQueryNames.length - 1) {
+      newList = [...listQueryNames, name];
+    } else {
+      newList = listQueryNames.slice(0, level + 1);
+      newList.push(name);
+    }
+    setListQueryNames(newList);
+  };
 
   return (
     <Stack
       direction='row'
-      spacing={2}
+      spacing={1}
       divider={<Divider orientation='vertical' />}
     >
-      <SchemaItem queryName='Query' />
-      {listNames.length > 0 &&
-        listNames.map((itemName) => (
-          <SchemaItem key={itemName} queryName={itemName} />
-        ))}
+      {listQueryNames.map((queryName, level) => (
+        <SchemaItem
+          key={queryName}
+          queryName={queryName}
+          addQueryName={addQueryName}
+          level={level}
+        />
+      ))}
     </Stack>
   );
 };

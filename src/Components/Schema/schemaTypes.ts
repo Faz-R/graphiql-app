@@ -1,11 +1,22 @@
-export type SchemaItemType = {
+export type SchemaItem = {
   name: string;
   description: string;
-  type: { name: string };
+  type: { name: string | null };
 };
 
-export type SchemaListType = {
+export type SchemaList = {
   name: string;
   description: string;
-  fields: SchemaItemType[] | null;
+  fields: SchemaItem[] | null;
+};
+
+export type SchemaItemProps = {
+  level: number;
+  queryName: string;
+  addQueryName: (name: string, level: number) => void;
+};
+
+export type SchemaNodeProps = SchemaItem & {
+  level: number;
+  addQueryName: (name: string, level: number) => void;
 };

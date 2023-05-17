@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Drawer } from '@mui/material';
+import { Button, Drawer, SwipeableDrawer } from '@mui/material';
 import SchemaList from './SchemaList';
 
 const Schema = () => {
@@ -10,12 +10,7 @@ const Schema = () => {
       <Button variant='contained' onClick={() => setIsOpen(!isOpen)}>
         Docs
       </Button>
-      <Drawer
-        anchor='right'
-        open={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
-        variant='persistent'
-      >
+      <Drawer anchor='right' open={isOpen} onClose={() => setIsOpen(false)}>
         <SchemaList />
       </Drawer>
     </>
