@@ -1,53 +1,27 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
+import { useState } from 'react';
+import { Stack, Divider } from '@mui/material';
+import SchemaItem from '../SchemaItem';
+// import type { SchemaListType } from '../schemaTypes';
 
-import { SCHEMA } from '../../../apollo/schema';
-import { useQuery } from '@apollo/client';
+const SchemaList = () => {
+  const [listNames, setListNames] = useState<string[]>([]);
 
-type SchemaType = {
-  name: string;
-  description: string;
-  type: { name: string };
-};
-
-const SchemaList: React.FC<{ name: string }> = ({ name }) => {
-  const { loading, data } = useQuery(SCHEMA, {
-    variables: { name },
-  });
-
-  if (loading) return <CircularProgress />;
+  // const handleClick = (name: string, index: number)=>{
+  //     setList(prevList=> [...prevList, ])
+  // }
 
   return (
-    <Box>
-      <Typography variant='button' align='center' paragraph>
-        {data.__type.name}
-      </Typography>
-      <List>
-        {data.__type.fields.map(({ name, description, type }: SchemaType) => (
-          <ListItem key={name} disablePadding divider>
-            <ListItemButton>
-              <ListItemText
-                primary={
-                  <Typography variant='body2'>
-                    {`${name}: ${type.name ?? ''}`}
-                  </Typography>
-                }
-                secondary={
-                  <Typography variant='caption'>{description}</Typography>
-                }
-              ></ListItemText>
-            </ListItemButton>
-          </ListItem>
+    <Stack
+      direction='row'
+      spacing={2}
+      divider={<Divider orientation='vertical' />}
+    >
+      <SchemaItem queryName='Query' />
+      {listNames.length > 0 &&
+        listNames.map((itemName) => (
+          <SchemaItem key={itemName} queryName={itemName} />
         ))}
-      </List>
-    </Box>
+    </Stack>
   );
 };
 

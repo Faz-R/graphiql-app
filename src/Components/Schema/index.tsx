@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Drawer, Stack, Divider } from '@mui/material';
+import { Button, Drawer } from '@mui/material';
 import SchemaList from './SchemaList';
 
 const Schema = () => {
@@ -16,13 +16,7 @@ const Schema = () => {
         onClose={() => setIsOpen(!isOpen)}
         variant='persistent'
       >
-        <Stack
-          direction='row'
-          spacing={2}
-          divider={<Divider orientation='vertical' />}
-        >
-          <SchemaList name='Query' />
-        </Stack>
+        <SchemaList />
       </Drawer>
     </>
   );
