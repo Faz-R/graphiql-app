@@ -1,7 +1,8 @@
-import { Box, Typography, List } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { SCHEMA } from '../../../apollo/schema';
 import SchemaNode from '../SchemaNode';
+import Loader from '../../Loader';
 import type { SchemaData } from '../context/SchemaContext';
 
 const SchemaItem: React.FC<{ query: string; level: number }> = ({
@@ -12,7 +13,7 @@ const SchemaItem: React.FC<{ query: string; level: number }> = ({
     variables: { query },
   });
 
-  if (loading) return null;
+  if (loading) return <Loader />;
 
   const { name, description, fields } = data.__type as SchemaData;
 
