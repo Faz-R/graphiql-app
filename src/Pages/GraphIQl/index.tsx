@@ -2,10 +2,9 @@ import { Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { lazy, useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 import GraphiQLField from '../../Components/GraphiQLField';
-
-const LazySchema = lazy(() => import('../../Components/Schema'));
+import Schema from '../../Components/Schema';
 
 const GraphIQL = () => {
   const [user] = useAuthState(auth);
@@ -20,9 +19,7 @@ const GraphIQL = () => {
     <Container>
       <h2>The most difficult content must be here</h2>
       <GraphiQLField />
-      <Suspense fallback={<h1>Loading....</h1>}>
-        <LazySchema />
-      </Suspense>
+      <Schema />
     </Container>
   );
 };

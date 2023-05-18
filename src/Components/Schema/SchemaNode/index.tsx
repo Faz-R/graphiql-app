@@ -1,7 +1,12 @@
 import { useContext } from 'react';
-import { ListItemButton, ListItemText, Typography } from '@mui/material';
-import SchemaContext from '../context/SchemaContext';
-import type { SchemaField } from '../schemaTypes';
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
+import SchemaContext, { type SchemaField } from '../context/SchemaContext';
 
 const SchemaNode: React.FC<SchemaField & { level: number }> = ({
   name,
@@ -11,16 +16,23 @@ const SchemaNode: React.FC<SchemaField & { level: number }> = ({
 }) => {
   const { setSchema } = useContext(SchemaContext);
   return (
-    <ListItemButton divider onClick={() => setSchema(type.name, level)}>
-      <ListItemText
-        primary={
-          <Typography variant='body2'>
-            {`${name}: ${type.name ?? '[ ]'}`}
-          </Typography>
-        }
-        secondary={<Typography variant='caption'>{description}</Typography>}
-      ></ListItemText>
-    </ListItemButton>
+    <Accordion
+      onClick={(e) => {
+        e.stopPropagation();
+        setSchema(type.name, level);
+      }}
+    >
+      <AccordionSummary expandIcon={<ExpandMore color='success' />}>
+        <Typography variant='subtitle1' color='primary'>
+          {`${name}: ${type.name ?? '[ ]'}`}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography variant='caption' color='lime'>
+          {description || 'none'}
+        </Typography>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 

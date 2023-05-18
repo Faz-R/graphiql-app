@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import SchemaContext, {
   type SchemaItemType,
   type SetSchemaType,
 } from './context/SchemaContext';
 import { Button, Drawer } from '@mui/material';
-import SchemaList from './SchemaList';
+import SchemaTwoToneIcon from '@mui/icons-material/SchemaTwoTone';
+import Loader from '../Loader';
+
+const SchemaList = lazy(() => import('./SchemaList'));
 
 const Schema = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -28,11 +31,29 @@ const Schema = () => {
 
   return (
     <SchemaContext.Provider value={{ schema: list, setSchema }}>
-      <Button variant='contained' onClick={() => setIsOpen(!isOpen)}>
-        Docs
+      <Button
+        endIcon={<SchemaTwoToneIcon />}
+        size='small'
+        variant='contained'
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        schema
       </Button>
-      <Drawer anchor='right' open={isOpen} onClose={() => setIsOpen(!isOpen)}>
-        <SchemaList />
+      <Drawer
+        onClick={() => setIsOpen(!isOpen)}
+        anchor='right'
+        open={isOpen}
+        PaperProps={{
+          sx: {
+            minHeight: '100%',
+            paddingBlock: 2,
+            paddingInline: 3,
+          },
+        }}
+      >
+        <Suspense fallback={<Loader />}>
+          <SchemaList />
+        </Suspense>
       </Drawer>
     </SchemaContext.Provider>
   );
