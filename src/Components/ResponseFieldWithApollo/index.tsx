@@ -1,18 +1,28 @@
 import { Grid, CircularProgress } from "@mui/material";
 import "./index.css";
 import { useQuery, gql } from "@apollo/client";
+import { useEffect } from "react";
 
 interface IResponseField {
   responseText: string;
   variables: string;
+  headers: string;
 }
 
-function ResponseFieldWithApollo({ responseText, variables }: IResponseField) {
+function ResponseFieldWithApollo({ responseText, variables, headers }: IResponseField) {
   const DATA_RESPONSE = gql`
     ${responseText}
   `;
   let varToJson: object | undefined;
   let errorMessage = "";
+
+  
+
+  useEffect(() => {
+    console.log('effect',headers);
+    refetch();
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [headers]);
 
   try {
     if (variables) varToJson = JSON.parse(variables);
@@ -20,10 +30,10 @@ function ResponseFieldWithApollo({ responseText, variables }: IResponseField) {
     errorMessage = "enter the valid variables";
   }
 
-  const { loading, error, data } = useQuery(DATA_RESPONSE, {
+  const { loading, error, data, refetch } = useQuery(DATA_RESPONSE, {
     variables: varToJson,
     errorPolicy: "all",
-    onError: (error) => console.log(error),
+    //onError: (error) => console.log(error),
   });
 
   if (loading) {

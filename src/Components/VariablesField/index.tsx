@@ -5,7 +5,7 @@ import { grey } from "@mui/material/colors";
 
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { Container, TextField } from "@mui/material";
+import { Container, TextField, Grid } from "@mui/material";
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 const drawerBleeding = 0;
@@ -14,6 +14,7 @@ interface Props {
   setOpenParent: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   setVariables: Dispatch<SetStateAction<string>>;
+  setHeaders: Dispatch<SetStateAction<string>>;
   window?: () => Window;
 }
 
@@ -86,18 +87,32 @@ export default function VariablesField(props: Props) {
               }}
               noValidate
               autoComplete="off">
-              <div>
-                <TextField
-                  id="outlined-multiline-flexible"
-                  label="enter variables"
-                  multiline
-                  minRows={9}
-                  variant="outlined"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    props.setVariables(event.target.value);
-                  }}
-                />
-              </div>
+              <Grid container spacing={2}>
+                <Grid item xs={5} mr={10}>
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="enter variables"
+                    multiline
+                    minRows={9}
+                    variant="outlined"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      props.setVariables(event.target.value);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={5} mr={10}>
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="enter headers"
+                    multiline
+                    minRows={9}
+                    variant="outlined"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      props.setHeaders(event.target.value);
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Box>
           </Container>
         </StyledBox>
