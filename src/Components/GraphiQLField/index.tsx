@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { Grid, Container, Button, Box } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
@@ -7,7 +6,7 @@ import VariablesField from "../VariablesField";
 import { DEF_VALUE_REQUEST } from "./constants";
 
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
-import { DefaultContext } from "@apollo/client/core/types";
+//import { DefaultContext } from "@apollo/client/core/types";
 
 interface IRequest {
   request: string;
@@ -15,11 +14,9 @@ interface IRequest {
   headers: string;
 }
 
-export let headersForRequest: DefaultContext = {};
-
 function GraphiQLField() {
   const [data, setData] = useState(DEF_VALUE_REQUEST);
-  const [headers, setHeaders] = useState ('');
+  const [headers, setHeaders] = useState("");
   const [request, setRequest] = useState<IRequest>({
     request: "",
     variables: "",
@@ -27,12 +24,9 @@ function GraphiQLField() {
   });
   const [variables, setVariables] = useState(``);
   const [open, setOpen] = useState(false);
- 
-  console.log((headers))
+
   const completeRequest = () => {
     setRequest({ request: data, variables, headers });
-    //console.log(JSON.parse(headers))
-    headersForRequest = JSON.parse(headers);
   };
 
   return (
@@ -61,7 +55,6 @@ function GraphiQLField() {
               responseText={request.request}
               variables={request.variables}
               headers={request.headers}
-
             />
           ) : (
             ""

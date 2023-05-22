@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 //import { DefaultContext } from "@apollo/client";
-import { headersForRequest } from "../Components/GraphiQLField";
+import { headersForRequest } from "../Components/ResponseFieldWithApollo";
 
 const httpLink = createHttpLink({
   uri: 'https://rickandmortyapi.com/graphql', 
