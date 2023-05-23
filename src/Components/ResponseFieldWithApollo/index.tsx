@@ -30,7 +30,11 @@ function ResponseFieldWithApollo({
   }, [headers]);
 
   useEffect(() => {
-    getResponse();
+    try {
+      getResponse();
+    } catch (err) {
+      errorMessage = "enter the valid hhhhuuuuuuu";
+    }
     //refetch();
   }, []);
 
@@ -51,21 +55,18 @@ function ResponseFieldWithApollo({
     {
       variables: varToJson,
       errorPolicy: "all",
-      //onError: (error) => alert(error),
+      onError: (error) => console.log({error}),
     }
   );
 
-  try {
-    if (loading) {
-      return <CircularProgress />;
-    }
-
-    if (error) {
-      return <h3>Error {error.message}</h3>;
-    }
-  } catch (err) {
-    errorMessage = "enter the valid hhhhuuuuuuu";
+  if (loading) {
+    return <CircularProgress />;
   }
+  if (error) {
+    console.log(error);
+    return <h3>Error {error.message}</h3>;
+  }
+
   /* const { loading, error, data, refetch } = useQuery(DATA_RESPONSE, {
     variables: varToJson,
     errorPolicy: "all",
