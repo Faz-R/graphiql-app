@@ -4,8 +4,10 @@ import SendIcon from "@mui/icons-material/Send";
 import RequestField from "../RequestField";
 import VariablesField from "../VariablesField";
 import { DEF_VALUE_REQUEST } from "./constants";
-
+import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
+import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
+
 //import { DefaultContext } from "@apollo/client/core/types";
 
 interface IRequest {
@@ -17,6 +19,7 @@ interface IRequest {
 function GraphiQLField() {
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
+  const [key, setKey] = useState(true);
   const [request, setRequest] = useState<IRequest>({
     request: "",
     variables: "",
@@ -26,6 +29,7 @@ function GraphiQLField() {
   const [open, setOpen] = useState(false);
 
   const completeRequest = () => {
+    setKey(!key);
     setRequest({ request: data, variables, headers });
   };
 
@@ -51,11 +55,22 @@ function GraphiQLField() {
         <Grid container spacing={2}>
           <RequestField setData={setData} />
           {request.request ? (
-            <ResponseFieldWithApollo
-              responseText={request.request}
-              variables={request.variables}
-              headers={request.headers}
-            />
+            <ErrorBoundary
+              FallbackComponent={ErrorFallbackComponent}
+              onReset={() =>
+                setRequest({
+                  request: "",
+                  variables: "",
+                  headers: "",
+                })
+              }>
+              <ResponseFieldWithApollo
+                responseText={request.request}
+                variables={request.variables}
+                headers={request.headers}
+                req={key}
+              />
+            </ErrorBoundary>
           ) : (
             ""
           )}

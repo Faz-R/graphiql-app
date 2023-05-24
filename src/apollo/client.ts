@@ -1,5 +1,4 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
-
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 //import { DefaultContext } from "@apollo/client";
@@ -17,19 +16,32 @@ const httpLink = createHttpLink({
       
 }; */
 
+ type MessErr = {
+  graphErr: string;
+  netErr: string;
+}
+
+export const messError: MessErr = {
+  graphErr: '',
+  netErr: '',
+}
+
+
+
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      if (message.includes("syntax")) console.log("syntax error");
-      console.log(
-        `[Ошибка GraphQL]: Сообщение: ${message}, местонахождение: ${locations}, путь: ${path}`
-      );
+    graphQLErrors.forEach(({ message, locations }) => {
+      locations
+        ? (messError.graphErr = `[Error GraphQL]: Message: ${message}` + '\n' + `Location: Line: ${locations[0].line} Column: ${locations[0].column}`)
+        : (messError.graphErr = `[Error GraphQL]: Message: ${message} `);
     });
-  }
+  } else messError.graphErr = ``;
 
   if (networkError) {
-    console.log(`[Сетевая ошибка]: ${networkError}`);
+    messError.netErr = `[Network error]: ${networkError}`;
+    console.log('net err')
   }
+  else messError.netErr = ``;
 });
 
 const setHeaders = setContext((/* headers */) => {
@@ -44,9 +56,7 @@ const setHeaders = setContext((/* headers */) => {
 });
 
 const client = new ApolloClient({
-  link: errorLink.concat(setHeaders.concat(httpLink)),
-  //link: from([setHeaders.concat(httpLink), errorLink]),
-  //link: from([httpLink, errorLink]),
+  link: errorLink.concat(setHeaders.concat(httpLink)),  
   cache: new InMemoryCache({
     addTypename: false,
   }),

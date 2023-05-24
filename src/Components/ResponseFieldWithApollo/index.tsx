@@ -4,11 +4,14 @@ import { Grid, CircularProgress } from "@mui/material";
 import "./index.css";
 import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
+import { messError } from "../../apollo/client";
+import { ErrorModalWindow } from "../ErrorModalWindow";
 
 interface IResponseField {
   responseText: string;
   variables: string;
   headers: string;
+  req: boolean;
 }
 
 export let headersForRequest: DefaultContext = {};
@@ -17,6 +20,7 @@ function ResponseFieldWithApollo({
   responseText,
   variables,
   headers,
+  req,
 }: IResponseField) {
   const DATA_RESPONSE = gql`
     ${responseText}
@@ -25,54 +29,47 @@ function ResponseFieldWithApollo({
   let errorMessage = "";
 
   useEffect(() => {
-    // getResponse();
     refetch();
-  }, [headers]);
+  }, [headers, variables]);
 
   useEffect(() => {
-    try {
-      getResponse();
-    } catch (err) {
-      errorMessage = "enter the valid hhhhuuuuuuu";
-    }
-    //refetch();
-  }, []);
-
-  try {
-    if (headers) headersForRequest = JSON.parse(headers);
-  } catch (err) {
-    errorMessage = "enter the valid headers";
-  }
-
-  try {
-    if (variables) varToJson = JSON.parse(variables);
-  } catch (err) {
-    errorMessage = "enter the valid variables";
-  }
+    getResponse();
+  }, [req]);
 
   const [getResponse, { loading, error, data, refetch }] = useLazyQuery(
     DATA_RESPONSE,
     {
       variables: varToJson,
       errorPolicy: "all",
-      onError: (error) => console.log({error}),
     }
   );
+
+  try {
+    if (headers) headersForRequest = JSON.parse(headers);
+  } catch (err) {
+    errorMessage = "enter the valid headers";
+    return <ErrorModalWindow error={errorMessage} key={+req} />;
+  }
+
+  try {
+    if (variables) varToJson = JSON.parse(variables);
+  } catch (err) {    
+    errorMessage = "enter the valid variables";
+    return <ErrorModalWindow error={errorMessage} key={+req}/>;
+  }
 
   if (loading) {
     return <CircularProgress />;
   }
-  if (error) {
-    console.log(error);
-    return <h3>Error {error.message}</h3>;
+  if (error?.graphQLErrors) {
+    const err = "Error" + error.message + "  \n" + messError.graphErr;
+    return <ErrorModalWindow error={err} key={+req} />;
   }
 
-  /* const { loading, error, data, refetch } = useQuery(DATA_RESPONSE, {
-    variables: varToJson,
-    errorPolicy: "all",
-    //onError: (error) => alert(error),
-  });
- */
+  if (error) {
+    const err = "Error" + error.message + "  \n" + messError.netErr;
+    return <ErrorModalWindow error={err} key={+req}/>;
+  }
 
   return (
     <Grid item xs={5} mr={10}>
