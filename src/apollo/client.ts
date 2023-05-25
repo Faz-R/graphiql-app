@@ -46,7 +46,9 @@ const client = new ApolloClient({
   link: errorLink.concat(setHeaders.concat(httpLink)),
   cache: new InMemoryCache({
     addTypename: false,
+    addTypename: false,
   }),
 });
 
 export default client;
+
