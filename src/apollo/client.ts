@@ -45,8 +45,7 @@ const setHeaders = setContext((/* headers */) => {
 const client = new ApolloClient({
   link: errorLink.concat(setHeaders.concat(httpLink)),
   cache: new InMemoryCache({
-    addTypename: false,
-    addTypename: false,
+    addTypename: false,    
   }),
 });
 
