@@ -8,8 +8,6 @@ import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
 import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
 
-//import { DefaultContext } from "@apollo/client/core/types";
-
 interface IRequest {
   request: string;
   variables: string;

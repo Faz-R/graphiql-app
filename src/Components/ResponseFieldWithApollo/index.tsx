@@ -26,7 +26,6 @@ function ResponseFieldWithApollo({
     ${responseText}
   `;
   let varToJson: object | undefined;
-  let errorMessage = "";
 
   useEffect(() => {
     refetch();
@@ -47,15 +46,15 @@ function ResponseFieldWithApollo({
   try {
     if (headers) headersForRequest = JSON.parse(headers);
   } catch (err) {
-    errorMessage = "enter the valid headers";
+    const errorMessage = "enter the valid headers";
     return <ErrorModalWindow error={errorMessage} key={+req} />;
   }
 
   try {
     if (variables) varToJson = JSON.parse(variables);
-  } catch (err) {    
-    errorMessage = "enter the valid variables";
-    return <ErrorModalWindow error={errorMessage} key={+req}/>;
+  } catch (err) {
+    const errorMessage = "enter the valid variables";
+    return <ErrorModalWindow error={errorMessage} key={+req} />;
   }
 
   if (loading) {
@@ -68,18 +67,12 @@ function ResponseFieldWithApollo({
 
   if (error) {
     const err = "Error" + error.message + "  \n" + messError.netErr;
-    return <ErrorModalWindow error={err} key={+req}/>;
+    return <ErrorModalWindow error={err} key={+req} />;
   }
 
   return (
     <Grid item xs={5} mr={10}>
-      {errorMessage ? (
-        <div>{errorMessage}</div>
-      ) : data ? (
-        <pre className="pre">{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        ""
-      )}
+      {data ? <pre className="pre">{JSON.stringify(data, null, 2)}</pre> : ""}
     </Grid>
   );
 }

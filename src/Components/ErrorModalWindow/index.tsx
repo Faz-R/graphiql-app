@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -11,17 +9,16 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  /* width: 400, */
   bgcolor: "background.paper",
   border: "2px solid #fff",
   boxShadow: 24,
   p: 4,
 };
 type ErrorModal = {
-  error: string;   
+  error: string;
 };
 
-export function ErrorModalWindow({ error}: ErrorModal) {
+export function ErrorModalWindow({ error }: ErrorModal) {
   const [open, setOpen] = useState(true);
 
   const handleClose = () => {
