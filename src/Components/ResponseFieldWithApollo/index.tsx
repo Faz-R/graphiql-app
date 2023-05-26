@@ -1,34 +1,74 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps*/
 import { Grid, CircularProgress } from "@mui/material";
 import "./index.css";
-import { useQuery, gql } from "@apollo/client";
+import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
+import { useEffect } from "react";
+import { messError } from "../../apollo/client";
+import { ErrorModalWindow } from "../ErrorModalWindow";
 
 interface IResponseField {
   responseText: string;
   variables: string;
+  headers: string;
+  req: boolean;
 }
 
-function ResponseFieldWithApollo({ responseText,variables }: IResponseField) {
+export let headersForRequest: DefaultContext = {};
+
+function ResponseFieldWithApollo({
+  responseText,
+  variables,
+  headers,
+  req,
+}: IResponseField) {
   const DATA_RESPONSE = gql`
     ${responseText}
   `;
-  const VARIABLES =JSON.parse(variables);
+  let varToJson: object | undefined;
 
-  const { loading, error, data } = useQuery(DATA_RESPONSE, {
-    variables: VARIABLES/*  { "page": 1,
-  "filter": {
-    "name": "morty"
-  }  }*/
-  });
+  useEffect(() => {
+    refetch();
+  }, [headers, variables]);
 
-  console.log('variables', VARIABLES)
+  useEffect(() => {
+    getResponse();
+  }, [req]);
+
+  const [getResponse, { loading, error, data, refetch }] = useLazyQuery(
+    DATA_RESPONSE,
+    {
+      variables: varToJson,
+      errorPolicy: "all",
+    }
+  );
+
+  try {
+    if (headers) headersForRequest = JSON.parse(headers);
+  } catch (err) {
+    const errorMessage = "enter the valid headers";
+    return <ErrorModalWindow error={errorMessage} key={+req} />;
+  }
+
+  try {
+    if (variables) varToJson = JSON.parse(variables);
+  } catch (err) {
+    const errorMessage = "enter the valid variables";
+    return <ErrorModalWindow error={errorMessage} key={+req} />;
+  }
 
   if (loading) {
     return <CircularProgress />;
   }
+  if (error?.graphQLErrors) {
+    const err = "Error" + error.message + "  \n" + messError.graphErr;
+    return <ErrorModalWindow error={err} key={+req} />;
+  }
 
   if (error) {
-    return <h3>Error {error.message}</h3>;
-  }  
+    const err = "Error" + error.message + "  \n" + messError.netErr;
+    return <ErrorModalWindow error={err} key={+req} />;
+  }
 
   return (
     <Grid item xs={5} mr={10}>
