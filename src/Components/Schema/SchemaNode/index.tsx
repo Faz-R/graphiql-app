@@ -24,7 +24,14 @@ const SchemaNode: React.FC<SchemaField & { level: number }> = ({
     >
       <AccordionSummary expandIcon={<ExpandMore color='success' />}>
         <Typography variant='subtitle1' color='primary'>
-          {`${name}: ${type.name ?? '[ ]'}`}
+          {`${name}: ${
+            type.name ||
+            `[${
+              type.ofType?.name ?? description.startsWith('Episode')
+                ? 'Episode'
+                : 'Character'
+            }]`
+          }`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
