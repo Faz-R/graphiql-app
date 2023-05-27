@@ -10,6 +10,9 @@ export const SCHEMA = gql`
         description
         type {
           name
+          ofType {
+            name
+          }
         }
       }
     }

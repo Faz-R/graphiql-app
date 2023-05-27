@@ -3,7 +3,7 @@ import { createContext } from 'react';
 export type SchemaField = {
   name: string;
   description: string;
-  type: { name: string | null };
+  type: { name: string | null; ofType: { name: string } | null };
 };
 
 export type SchemaData = {
