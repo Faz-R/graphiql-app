@@ -1,43 +1,67 @@
 import { TextField, Grid } from "@mui/material";
 import { DEF_VALUE_REQUEST } from "../GraphiQLField/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import VariablesField from "../VariablesField";
+import { get } from "react-hook-form";
 
 interface IrequestField {
   setData: Dispatch<SetStateAction<string>>;
+  getHeaders: Dispatch<SetStateAction<string>>;
+  getVariables: Dispatch<SetStateAction<string>>;
 }
 
-function RequestField({ setData }: IrequestField) {
+function RequestField({ setData, getHeaders, getVariables }: IrequestField) {
+  // const [headers, setHeaders] = useState("");
+  // const [variables, setVariables] = useState(``);
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <Grid item xs={6} sx={{ height: "100%" }}>
-        <TextField
-          id="outlined-multiline-flexible"
-          fullWidth
-          multiline
-          minRows={26}
-          focused
-          variant="filled"
-          defaultValue={DEF_VALUE_REQUEST}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setData(event.target.value);
-          }}
-          sx={{
-            "& .MuiInputBase-root": {
-              padding: "20px",
-              borderRadius: 0,
-              borderRight: "2px solid #90caf9",
-              height: "70vh",
-              maxHeight: "70vh",
-              overflow: "hidden",
-              overflowY: "auto",
-            },
-            "& .MuiInputBase-root::before": {
-              display: "none",
-            },
-            "& .MuiInputBase-root::after": {
-              display: "none",
-            },
-          }}
+      <Grid
+        item
+        xs={6}
+        sx={{
+          height: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+          borderRight: "2px solid #90caf9",
+        }}
+      >
+        <div style={{ flex: "3 1 0%", overflowY: "auto" }}>
+          <TextField
+            id="outlined-multiline-flexible"
+            fullWidth
+            multiline
+            focused
+            variant="filled"
+            defaultValue={DEF_VALUE_REQUEST}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setData(event.target.value);
+            }}
+            sx={{
+              height: "100%",
+              "& .MuiInputBase-root": {
+                padding: "20px",
+                borderRadius: 0,
+                height: "100%",
+                overflowY: "auto",
+                display: "flex",
+                alignItems: "flex-start",
+              },
+              "& .MuiInputBase-root::before": {
+                display: "none",
+              },
+              "& .MuiInputBase-root::after": {
+                display: "none",
+              },
+            }}
+          />
+        </div>
+        <VariablesField
+          setVariables={getVariables}
+          open={open}
+          setOpenParent={setOpen}
+          setHeaders={getHeaders}
         />
       </Grid>
     </>

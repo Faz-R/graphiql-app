@@ -6,10 +6,13 @@ import SchemaContext, {
 import { Button, Drawer } from "@mui/material";
 import SchemaTwoToneIcon from "@mui/icons-material/SchemaTwoTone";
 import Loader from "../Loader";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const SchemaList = lazy(() => import("./SchemaList"));
 
 const Schema = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [list, setList] = useState<SchemaItemType[]>([
     { query: "Query", level: 1 },
@@ -31,7 +34,7 @@ const Schema = () => {
 
   return (
     <SchemaContext.Provider value={{ schema: list, setSchema }}>
-      <Button onClick={() => setIsOpen(!isOpen)}>schema</Button>
+      <Button onClick={() => setIsOpen(!isOpen)}>{t("schema")}</Button>
       <Drawer
         onClick={() => setIsOpen(!isOpen)}
         anchor="right"

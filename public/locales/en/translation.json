@@ -17,5 +17,8 @@
   "dontHaveAccount": "Don't have an account?",
   "register": "Register now.",
   "submit": "submit",
-  "emailInUse": "Email already in use"
+  "emailInUse": "Email already in use",
+  "variables": "variables",
+  "headers": "headers",
+  "schema": "schema"
 }
