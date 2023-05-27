@@ -1,9 +1,9 @@
-import { Box, Typography } from '@mui/material';
-import { useQuery } from '@apollo/client';
-import { SCHEMA } from '../../../apollo/schema';
-import SchemaNode from '../SchemaNode';
-import Loader from '../../Loader';
-import type { SchemaData } from '../context/SchemaContext';
+import { Box, Paper, Typography } from "@mui/material";
+import { useQuery } from "@apollo/client";
+import { SCHEMA } from "../../../apollo/schema";
+import SchemaNode from "../SchemaNode";
+import Loader from "../../Loader";
+import type { SchemaData } from "../context/SchemaContext";
 
 const SchemaItem: React.FC<{ query: string; level: number }> = ({
   query,
@@ -13,7 +13,17 @@ const SchemaItem: React.FC<{ query: string; level: number }> = ({
     variables: { query },
   });
 
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <Box
+        sx={{
+          maxWidth: 300,
+          minWidth: 150,
+        }}
+      >
+        <Loader />
+      </Box>
+    );
 
   const { name, description, fields } = data.__type as SchemaData;
 
@@ -24,13 +34,23 @@ const SchemaItem: React.FC<{ query: string; level: number }> = ({
         minWidth: 150,
       }}
     >
-      <Typography variant='button' align='center' paragraph color='primary'>
+      <Typography variant="h6" align="center" paragraph color="primary">
         {name}
       </Typography>
       {description && (
-        <Typography variant='body1' color='secondary'>
-          {description}
-        </Typography>
+        <Paper elevation={1} sx={{ padding: "20px" }}>
+          <Typography
+            variant="subtitle1"
+            color="inherit"
+            gutterBottom
+            sx={{ fontWeight: "600" }}
+          >
+            Type Details
+          </Typography>
+          <Typography paragraph color="inherit">
+            {description}
+          </Typography>
+        </Paper>
       )}
       {fields &&
         fields.map((field) => (

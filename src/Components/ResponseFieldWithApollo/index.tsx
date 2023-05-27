@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps*/
-import { Grid, CircularProgress } from "@mui/material";
+import { Grid, CircularProgress, Paper } from "@mui/material";
 import "./index.css";
 import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
@@ -71,8 +71,21 @@ function ResponseFieldWithApollo({
   }
 
   return (
-    <Grid item xs={5} mr={10}>
-      {data ? <pre className="pre">{JSON.stringify(data, null, 2)}</pre> : ""}
+    <Grid item xs={6}>
+      {data && (
+        <Paper
+          component="pre"
+          sx={{
+            m: 0,
+            maxHeight: "70vh",
+            overflow: "hidden",
+            overflowY: "auto",
+            padding: "20px",
+          }}
+        >
+          {JSON.stringify(data, null, 2)}
+        </Paper>
+      )}
     </Grid>
   );
 }

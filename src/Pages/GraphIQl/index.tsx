@@ -1,10 +1,10 @@
-import { Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect } from 'react';
-import GraphiQLField from '../../Components/GraphiQLField';
-import Schema from '../../Components/Schema';
+import { Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
+import GraphiQLField from "../../Components/GraphiQLField";
+import Schema from "../../Components/Schema";
 
 const GraphIQL = () => {
   const [user] = useAuthState(auth);
@@ -12,13 +12,13 @@ const GraphIQL = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate('/');
+      navigate("/");
     }
   }, [navigate, user]);
   return (
-    <Container>      
+    <Container>
       <GraphiQLField />
-      <Schema />
+      {/* <Schema /> */}
     </Container>
   );
 };
