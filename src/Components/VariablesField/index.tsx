@@ -1,13 +1,38 @@
-import { Global } from "@emotion/react";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { grey } from "@mui/material/colors";
 import Box from "@mui/material/Box";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { Container, TextField, Grid } from "@mui/material";
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import {
+  TextField,
+  Tab,
+  Tabs,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+} from "@mui/material";
+import { Dispatch, SetStateAction, useState } from "react";
+import { ExpandMore } from "@mui/icons-material";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
-const drawerBleeding = 0;
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
 
 interface Props {
   setOpenParent: Dispatch<SetStateAction<boolean>>;
@@ -17,105 +42,104 @@ interface Props {
   window?: () => Window;
 }
 
-const Root = styled("div")(({ theme }) => ({
-  height: "100%",
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? grey[100]
-      : theme.palette.background.default,
-}));
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
-}));
-
 export default function VariablesField(props: Props) {
-  const { window } = props;
-  const [open, setOpen] = useState(props.open);
+  const { t } = useTranslation();
+  const [value, setValue] = useState(0);
 
-  useEffect(() => {
-    setOpen(props.open);
-  }, [props.open]);
-
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
-    props.setOpenParent(newOpen);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    event.stopPropagation();
+    setValue(newValue);
+    setOpen(true);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const [isOpen, setOpen] = useState(false);
 
   return (
-    <Root>
-      <CssBaseline />
-      <Global
-        styles={{
-          ".MuiDrawer-root > .MuiPaper-root": {
-            height: `calc(45% - ${drawerBleeding}px)`,
-            overflow: "visible",
-          },
+    <>
+      <Accordion
+        disableGutters
+        expanded={isOpen === true}
+        sx={{
+          flex: "0 1 0%",
         }}
-      />
-
-      <SwipeableDrawer
-        container={container}
-        anchor="bottom"
-        open={open}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-        swipeAreaWidth={drawerBleeding}
-        disableSwipeToOpen={false}
-        ModalProps={{
-          keepMounted: true,
-        }}>
-        <StyledBox
-          sx={{
-            position: "absolute",
-            top: -drawerBleeding,
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            visibility: "visible",
-            right: 0,
-            left: 0,
-          }}>
-          <Container maxWidth="lg">
-            <Box
-              component="form"
-              sx={{
-                "& .MuiTextField-root": { m: 4, width: "55ch" },
+      >
+        <AccordionSummary
+          expandIcon={
+            <ExpandMore
+              onClick={() => {
+                setOpen(!isOpen);
               }}
-              noValidate
-              autoComplete="off">
-              <Grid container spacing={2}>
-                <Grid item xs={5} mr={10}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="enter variables"
-                    multiline
-                    minRows={9}
-                    variant="outlined"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      props.setVariables(event.target.value);
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={5} mr={10}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="enter headers"
-                    multiline
-                    minRows={9}
-                    variant="outlined"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      props.setHeaders(event.target.value);
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Container>
-        </StyledBox>
-      </SwipeableDrawer>
-    </Root>
+            />
+          }
+        >
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={value} onChange={handleChange}>
+              <Tab label={t("variables")} />
+              <Tab label={t("headers")} />
+            </Tabs>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails sx={{ width: "100%" }}>
+          <TabPanel value={value} index={0}>
+            <TextField
+              id="outlined-multiline-flexible"
+              multiline
+              focused
+              variant="standard"
+              maxRows={5}
+              minRows={5}
+              sx={{
+                width: "100%",
+                "& .MuiInputBase-root": {
+                  paddingLeft: "10px",
+                  height: "100%",
+                  borderRadius: 0,
+                  overflow: "hidden",
+                  overflowY: "auto",
+                },
+                "& .MuiInputBase-root::before": {
+                  display: "none",
+                },
+                "& .MuiInputBase-root::after": {
+                  display: "none",
+                },
+              }}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                props.setVariables(event.target.value);
+              }}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <TextField
+              id="outlined-multiline-flexible"
+              multiline
+              focused
+              variant="standard"
+              maxRows={5}
+              minRows={5}
+              sx={{
+                width: "100%",
+                "& .MuiInputBase-root": {
+                  paddingLeft: "10px",
+                  height: "100%",
+                  borderRadius: 0,
+                  overflow: "hidden",
+                  overflowY: "auto",
+                },
+                "& .MuiInputBase-root::before": {
+                  display: "none",
+                },
+                "& .MuiInputBase-root::after": {
+                  display: "none",
+                },
+              }}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                props.setHeaders(event.target.value);
+              }}
+            />
+          </TabPanel>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }

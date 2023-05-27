@@ -26,7 +26,6 @@ function GraphiQLField() {
     headers: "",
   });
   const [variables, setVariables] = useState(``);
-  const [open, setOpen] = useState(false);
 
   const completeRequest = () => {
     setKey(!key);
@@ -44,24 +43,14 @@ function GraphiQLField() {
         <Button onClick={completeRequest} color="primary">
           <PlayArrow sx={{ fontSize: 30 }} />
         </Button>
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          variables
-        </Button>
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          headers
-        </Button>
         <Schema />
       </ButtonGroup>
       <Grid container sx={{ position: "relative", width: "100%" }}>
-        <RequestField setData={setData} />
+        <RequestField
+          setData={setData}
+          getHeaders={setHeaders}
+          getVariables={setVariables}
+        />
 
         {request.request ? (
           <ErrorBoundary
@@ -85,12 +74,12 @@ function GraphiQLField() {
           ""
         )}
       </Grid>
-      <VariablesField
+      {/* <VariablesField
         setVariables={setVariables}
         open={open}
         setOpenParent={setOpen}
         setHeaders={setHeaders}
-      />
+      /> */}
     </>
   );
 }
