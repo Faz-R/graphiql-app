@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, Container, Button, Box } from "@mui/material";
+import { Grid, Container, Button, Box, Fab, ButtonGroup } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import RequestField from "../RequestField";
 import VariablesField from "../VariablesField";
@@ -7,6 +7,8 @@ import { DEF_VALUE_REQUEST } from "./constants";
 import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
 import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
+import { PlayArrow, PlayCircle, PlayCircleFilled } from "@mui/icons-material";
+import Schema from "../Schema";
 
 interface IRequest {
   request: string;
@@ -33,53 +35,62 @@ function GraphiQLField() {
 
   return (
     <>
-      <Container maxWidth="xl">
-        <Button
-          variant="contained"
-          sx={{ m: "8px", p: "10px", pr: "50px", pl: "50px" }}
-          aria-label="directions"
-          onClick={completeRequest}
-          endIcon={<SendIcon />}>
-          Send
+      <ButtonGroup
+        variant="contained"
+        aria-label="outlined primary button group"
+        color="inherit"
+        sx={{ paddingTop: "20px", mb: "20px" }}
+      >
+        <Button onClick={completeRequest} color="primary">
+          <PlayArrow sx={{ fontSize: 30 }} />
         </Button>
-        <Box sx={{ textAlign: "left", pt: 1 }}>
-          <Button
-            onClick={() => {
-              setOpen(true);
-            }}>
-            Variables
-          </Button>
-        </Box>
-        <Grid container spacing={2}>
-          <RequestField setData={setData} />
-          {request.request ? (
-            <ErrorBoundary
-              FallbackComponent={ErrorFallbackComponent}
-              onReset={() =>
-                setRequest({
-                  request: "",
-                  variables: "",
-                  headers: "",
-                })
-              }>
-              <ResponseFieldWithApollo
-                responseText={request.request}
-                variables={request.variables}
-                headers={request.headers}
-                req={key}
-              />
-            </ErrorBoundary>
-          ) : (
-            ""
-          )}
-        </Grid>
-        <VariablesField
-          setVariables={setVariables}
-          open={open}
-          setOpenParent={setOpen}
-          setHeaders={setHeaders}
-        />
-      </Container>
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          variables
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          headers
+        </Button>
+        <Schema />
+      </ButtonGroup>
+      <Grid container sx={{ position: "relative", width: "100%" }}>
+        <RequestField setData={setData} />
+
+        {request.request ? (
+          <ErrorBoundary
+            FallbackComponent={ErrorFallbackComponent}
+            onReset={() =>
+              setRequest({
+                request: "",
+                variables: "",
+                headers: "",
+              })
+            }
+          >
+            <ResponseFieldWithApollo
+              responseText={request.request}
+              variables={request.variables}
+              headers={request.headers}
+              req={key}
+            />
+          </ErrorBoundary>
+        ) : (
+          ""
+        )}
+      </Grid>
+      <VariablesField
+        setVariables={setVariables}
+        open={open}
+        setOpenParent={setOpen}
+        setHeaders={setHeaders}
+      />
     </>
   );
 }
