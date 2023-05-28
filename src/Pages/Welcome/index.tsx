@@ -19,7 +19,7 @@ import Loader from "../../Components/Loader";
 import { useTranslation } from "react-i18next";
 
 const Welcome = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const { t } = useTranslation();
 
   return loading ? (

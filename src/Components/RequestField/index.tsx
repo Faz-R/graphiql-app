@@ -2,7 +2,6 @@ import { TextField, Grid } from "@mui/material";
 import { DEF_VALUE_REQUEST } from "../GraphiQLField/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import VariablesField from "../VariablesField";
-import { get } from "react-hook-form";
 
 interface IrequestField {
   setData: Dispatch<SetStateAction<string>>;
