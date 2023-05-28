@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react-hooks/exhaustive-deps*/
-import { Grid, CircularProgress, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import "./index.css";
 import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
