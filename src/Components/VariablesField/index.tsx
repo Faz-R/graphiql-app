@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ExpandMore } from "@mui/icons-material";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 interface TabPanelProps {

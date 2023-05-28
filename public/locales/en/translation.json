@@ -24,5 +24,6 @@
   "translate": "Перевести на",
   "errorTitle": "Something went wrong",
   "tryAgain": "Try again",
-  "validVariables": "Enter the valid variables"
+  "validVariables": "Enter the valid variables",
+  "oops": "oops"
 }

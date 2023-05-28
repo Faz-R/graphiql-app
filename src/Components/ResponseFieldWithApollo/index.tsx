@@ -81,7 +81,8 @@ function ResponseFieldWithApollo({
               mt: "15px",
               mb: "30px",
             },
-          }}>
+          }}
+        >
           {JSON.stringify(data, null, 2)}
         </Paper>
       )}

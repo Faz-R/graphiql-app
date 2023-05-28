@@ -4,9 +4,7 @@ import SchemaContext, {
   type SetSchemaType,
 } from "./context/SchemaContext";
 import { Button, Drawer } from "@mui/material";
-import SchemaTwoToneIcon from "@mui/icons-material/SchemaTwoTone";
 import Loader from "../Loader";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 const SchemaList = lazy(() => import("./SchemaList"));
