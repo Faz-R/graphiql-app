@@ -13,7 +13,7 @@ interface Person {
 
 const PersonCard = ({ image, name }: Person) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, mr: "auto", ml: "auto" }}>
       <CardActionArea>
         <CardMedia component="img" height="300" image={image} alt={name} />
         <CardContent>

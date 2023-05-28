@@ -4,7 +4,6 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import GraphiQLField from "../../Components/GraphiQLField";
-import Schema from "../../Components/Schema";
 
 const GraphIQL = () => {
   const [user] = useAuthState(auth);

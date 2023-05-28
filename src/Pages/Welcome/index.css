@@ -1,7 +1,5 @@
 .top {
-  height: 80vh;
-  min-height: 500px;
-  max-height: 1300px;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,8 +8,4 @@
 
 .top__logo {
   width: 100%;
-}
-
-.team {
-  height: 80vh;
 }

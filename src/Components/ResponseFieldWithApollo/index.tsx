@@ -71,7 +71,7 @@ function ResponseFieldWithApollo({
   }
 
   return (
-    <Grid item xs={6}>
+    <Grid item md={6} sm={4} xs={4}>
       {data && (
         <Paper
           component="pre"
@@ -82,6 +82,12 @@ function ResponseFieldWithApollo({
             overflowY: "auto",
             padding: "20px",
             whiteSpace: "pre-wrap",
+            "@media (max-width: 600px)": {
+              maxHeight: "50vh",
+              height: "50vh",
+              mt: "15px",
+              mb: "30px",
+            },
           }}
         >
           {JSON.stringify(data, null, 2)}
