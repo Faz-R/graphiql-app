@@ -34,7 +34,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   } else messError.netErr = ``;
 });
 
-const setHeaders = setContext((/* headers */) => {
+const setHeaders = setContext(() => {
   return {
     headers: {
       ...headersForRequest,
