@@ -6,9 +6,8 @@ const Loader = () => {
       sx={{
         height: "100%",
         display: "flex",
-        alignItems: "center",
         justifyContent: "center",
-        mt: "10%",
+        mt: "20%",
       }}
     >
       <CircularProgress />
