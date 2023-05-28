@@ -34,7 +34,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   } else messError.netErr = ``;
 });
 
-const setHeaders = setContext((/* headers */) => {
+const setHeaders = setContext(() => {
   return {
     headers: {
       ...headersForRequest,
@@ -45,9 +45,8 @@ const setHeaders = setContext((/* headers */) => {
 const client = new ApolloClient({
   link: errorLink.concat(setHeaders.concat(httpLink)),
   cache: new InMemoryCache({
-    addTypename: false,    
+    addTypename: false,
   }),
 });
 
 export default client;
-

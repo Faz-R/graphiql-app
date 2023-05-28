@@ -7,10 +7,11 @@ import { DEF_VALUE_REQUEST } from "./constants";
 import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
 import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
+import { ErrorModalWindow } from "../ErrorModalWindow";
 
 interface IRequest {
   request: string;
-  variables: string;
+  variables: object | undefined;
   headers: string;
 }
 
@@ -18,21 +19,32 @@ function GraphiQLField() {
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
   const [key, setKey] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [request, setRequest] = useState<IRequest>({
     request: "",
-    variables: "",
+    variables: undefined,
     headers: "",
   });
   const [variables, setVariables] = useState(``);
   const [open, setOpen] = useState(false);
+  let varToJson: object | undefined;
 
   const completeRequest = () => {
     setKey(!key);
-    setRequest({ request: data, variables, headers });
+
+    try {
+      setErrorMessage("");
+      if (variables.trim()) varToJson = JSON.parse(variables);
+    } catch (err) {
+      setErrorMessage("enter the valid variables");
+    }
+
+    setRequest({ request: data, variables: varToJson, headers });
   };
 
   return (
     <>
+      {errorMessage ? <ErrorModalWindow error={errorMessage} key={+key} /> : ""}
       <Container maxWidth="xl">
         <Button
           variant="contained"
@@ -58,7 +70,7 @@ function GraphiQLField() {
               onReset={() =>
                 setRequest({
                   request: "",
-                  variables: "",
+                  variables: undefined,
                   headers: "",
                 })
               }>

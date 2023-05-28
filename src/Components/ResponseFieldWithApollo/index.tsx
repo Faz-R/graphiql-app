@@ -9,7 +9,7 @@ import { ErrorModalWindow } from "../ErrorModalWindow";
 
 interface IResponseField {
   responseText: string;
-  variables: string;
+  variables: object| undefined;
   headers: string;
   req: boolean;
 }
@@ -25,38 +25,38 @@ function ResponseFieldWithApollo({
   const DATA_RESPONSE = gql`
     ${responseText}
   `;
-  let varToJson: object | undefined;
+  //let varToJson: object | undefined;
 
   useEffect(() => {
+    
     refetch();
   }, [headers, variables]);
 
   useEffect(() => {
     getResponse();
-  }, [req]);
+    
+  }, [req, headers]);
 
   const [getResponse, { loading, error, data, refetch }] = useLazyQuery(
     DATA_RESPONSE,
     {
-      variables: varToJson,
+      variables: variables,
       errorPolicy: "all",
     }
-  );
+  ); 
+  
+  
 
   try {
-    if (headers) headersForRequest = JSON.parse(headers);
+    if (headers.trim()) headersForRequest = JSON.parse(headers);
+    else headersForRequest = {};
   } catch (err) {
     const errorMessage = "enter the valid headers";
     return <ErrorModalWindow error={errorMessage} key={+req} />;
   }
 
-  try {
-    if (variables) varToJson = JSON.parse(variables);
-  } catch (err) {
-    const errorMessage = "enter the valid variables";
-    return <ErrorModalWindow error={errorMessage} key={+req} />;
-  }
-
+ 
+  
   if (loading) {
     return <CircularProgress />;
   }
