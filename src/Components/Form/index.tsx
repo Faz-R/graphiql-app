@@ -69,7 +69,6 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
         sx={{ width: "100%" }}
         type="email"
         required
-        defaultValue="example@mail.com"
         autoComplete="email"
         {...register("email", { required: true })}
       />
@@ -81,7 +80,6 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
           error={!!errors.password?.message}
-          defaultValue="qwerty1!"
           autoComplete="password"
           {...register("password", {
             required: true,
