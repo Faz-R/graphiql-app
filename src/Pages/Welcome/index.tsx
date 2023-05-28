@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   Container,
@@ -29,8 +28,17 @@ const Welcome = () => {
     <>
       <section className="top">
         <Container>
-          <Grid container spacing={5}>
-            <Grid item xs={8} sx={{ mt: "auto", mb: "auto" }}>
+          <Grid
+            container
+            spacing={{ xs: 2, md: 5 }}
+            columns={{ xs: 4, sm: 12, md: 12 }}
+            sx={{
+              "@media (max-width: 600px)": {
+                flexDirection: "column-reverse",
+              },
+            }}
+          >
+            <Grid item xs={4} md={8} sm={8}>
               <Typography variant="h3" component="h1" sx={{ mb: "30px" }}>
                 GraphiQL App
               </Typography>
@@ -53,7 +61,7 @@ const Welcome = () => {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={1} sm={4} md={4}>
               <img
                 src={logo}
                 alt="graphQL"
@@ -67,7 +75,7 @@ const Welcome = () => {
       <Paper
         className="team"
         component="section"
-        sx={{ height: "80vh" }}
+        sx={{ minHeight: "80vh", display: "flex", alignItems: "center" }}
         elevation={8}
       >
         <Container
@@ -76,23 +84,27 @@ const Welcome = () => {
             flexDirection: "column",
             justifyContent: "center",
             height: "100%",
+            gap: "1.5em",
+            mt: "30px",
+            mb: "30px",
+
+            "@media (max-width: 600px)": {
+              width: "90%",
+              alignItems: "center",
+            },
           }}
         >
-          <Typography
-            variant="h3"
-            component="h2"
-            sx={{ textAlign: "center", mb: "40px" }}
-          >
+          <Typography variant="h3" component="h2" sx={{ textAlign: "center" }}>
             {t("team")}
           </Typography>
-          <Grid container spacing={5}>
-            <Grid item xs={4}>
+          <Grid container spacing={5} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid item md={4} sm={4} xs={4}>
               <PersonCard image={AlexPhoto} name={`${t("Alex")}`} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item md={4} sm={4} xs={4}>
               <PersonCard image={RifatPhoto} name={`${t("Rifat")}`} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item md={4} sm={4} xs={4}>
               <PersonCard image={JeniaPhoto} name={`${t("Yaheni")}`} />
             </Grid>
           </Grid>

@@ -11,20 +11,24 @@ interface IrequestField {
 }
 
 function RequestField({ setData, setHeaders, setVariables }: IrequestField) {
-  // const [headers, setHeaders] = useState("");
-  // const [variables, setVariables] = useState(``);
   const [open, setOpen] = useState(false);
   return (
     <>
       <Grid
         item
-        xs={6}
+        md={6}
+        sm={4}
+        xs={4}
         sx={{
           height: "70vh",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
           borderRight: "2px solid #90caf9",
+          "@media (max-width: 600px)": {
+            borderRight: "none",
+            height: "50vh",
+          },
         }}
       >
         <div style={{ flex: "3 1 0%", overflowY: "auto" }}>

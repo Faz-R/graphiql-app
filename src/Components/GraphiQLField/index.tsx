@@ -45,7 +45,11 @@ function GraphiQLField() {
         </Button>
         <Schema />
       </ButtonGroup>
-      <Grid container sx={{ position: "relative", width: "100%" }}>
+      <Grid
+        container
+        sx={{ position: "relative", width: "100%" }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
         <RequestField
           setData={setData}
           setHeaders={setHeaders}
@@ -74,12 +78,6 @@ function GraphiQLField() {
           ""
         )}
       </Grid>
-      {/* <VariablesField
-        setVariables={setVariables}
-        open={open}
-        setOpenParent={setOpen}
-        setHeaders={setHeaders}
-      /> */}
     </>
   );
 }

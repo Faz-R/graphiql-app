@@ -20,5 +20,6 @@
   "emailInUse": "Email already in use",
   "variables": "variables",
   "headers": "headers",
-  "schema": "schema"
+  "schema": "schema",
+  "translate": "Перевести на"
 }
