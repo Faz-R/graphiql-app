@@ -21,5 +21,8 @@
   "variables": "переменные",
   "headers": "заголовки",
   "schema": "схема",
-  "translate": "Translate to"
+  "translate": "Translate to",
+  "errorTitle": "Что-то пошло не так",
+  "tryAgain": "Попробовать снова",
+  "validVariables": "Введите корректные переменные"
 }

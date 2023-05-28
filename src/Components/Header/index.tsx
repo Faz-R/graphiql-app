@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { auth, logout } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { MailOutline, Menu } from "@mui/icons-material";
+import { Close, MailOutline, Menu } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
@@ -62,13 +62,24 @@ const Header = () => {
         onClose={toggleDrawer()}
         sx={{
           "& .MuiDrawer-paper": {
-            padding: "30px 20px",
+            padding: "20px",
+            paddingTop: "50px",
             alignItems: "center",
             gap: "0.7em",
-            minWidth: "220px",
+            minWidth: "300px",
           },
         }}
       >
+        <Close
+          sx={{
+            cursor: "pointer",
+            alignSelf: "flex-start",
+            position: "absolute",
+            top: "15px",
+            left: "15px",
+          }}
+          onClick={toggleDrawer()}
+        />
         {user ? (
           <>
             <Typography
