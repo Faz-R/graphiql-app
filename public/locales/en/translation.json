@@ -17,5 +17,13 @@
   "dontHaveAccount": "Don't have an account?",
   "register": "Register now.",
   "submit": "submit",
-  "emailInUse": "Email already in use"
+  "emailInUse": "Email already in use",
+  "variables": "variables",
+  "headers": "headers",
+  "schema": "schema",
+  "translate": "Перевести на",
+  "errorTitle": "Something went wrong",
+  "tryAgain": "Try again",
+  "validVariables": "Enter the valid variables",
+  "oops": "oops"
 }

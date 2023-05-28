@@ -1,18 +1,19 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense } from "react";
 import SchemaContext, {
   type SchemaItemType,
   type SetSchemaType,
-} from './context/SchemaContext';
-import { Button, Drawer } from '@mui/material';
-import SchemaTwoToneIcon from '@mui/icons-material/SchemaTwoTone';
-import Loader from '../Loader';
+} from "./context/SchemaContext";
+import { Button, Drawer } from "@mui/material";
+import Loader from "../Loader";
+import { useTranslation } from "react-i18next";
 
-const SchemaList = lazy(() => import('./SchemaList'));
+const SchemaList = lazy(() => import("./SchemaList"));
 
 const Schema = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [list, setList] = useState<SchemaItemType[]>([
-    { query: 'Query', level: 1 },
+    { query: "Query", level: 1 },
   ]);
 
   const setSchema: SetSchemaType = (name, index) => {
@@ -31,21 +32,14 @@ const Schema = () => {
 
   return (
     <SchemaContext.Provider value={{ schema: list, setSchema }}>
-      <Button
-        endIcon={<SchemaTwoToneIcon />}
-        size='small'
-        variant='contained'
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        schema
-      </Button>
+      <Button onClick={() => setIsOpen(!isOpen)}>{t("schema")}</Button>
       <Drawer
         onClick={() => setIsOpen(!isOpen)}
-        anchor='right'
+        anchor="right"
         open={isOpen}
         PaperProps={{
           sx: {
-            minHeight: '100%',
+            minHeight: "100%",
             paddingBlock: 2,
             paddingInline: 3,
           },

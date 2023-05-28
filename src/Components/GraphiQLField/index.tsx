@@ -1,85 +1,91 @@
 import { useState } from "react";
-import { Grid, Container, Button, Box } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+import { Grid, Button, ButtonGroup } from "@mui/material";
 import RequestField from "../RequestField";
-import VariablesField from "../VariablesField";
 import { DEF_VALUE_REQUEST } from "./constants";
 import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
 import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
+import { PlayArrow } from "@mui/icons-material";
+import Schema from "../Schema";
+import { ErrorModalWindow } from "../ErrorModalWindow";
+import { useTranslation } from "react-i18next";
 
 interface IRequest {
   request: string;
-  variables: string;
+  variables: object | undefined;
   headers: string;
 }
 
 function GraphiQLField() {
+  const { t } = useTranslation();
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
+  const [variables, setVariables] = useState("");
   const [key, setKey] = useState(true);
   const [request, setRequest] = useState<IRequest>({
     request: "",
-    variables: "",
+    variables: undefined,
     headers: "",
   });
-  const [variables, setVariables] = useState(``);
-  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  let varToJson: object | undefined;
 
   const completeRequest = () => {
     setKey(!key);
-    setRequest({ request: data, variables, headers });
+    try {
+      setErrorMessage("");
+      if (variables.trim()) varToJson = JSON.parse(variables);
+    } catch (err) {
+      setErrorMessage(`${t("validVariables")}`);
+    }
+    setRequest({ request: data, variables: varToJson, headers: headers });
   };
 
   return (
     <>
-      <Container maxWidth="xl">
-        <Button
-          variant="contained"
-          sx={{ m: "8px", p: "10px", pr: "50px", pl: "50px" }}
-          aria-label="directions"
-          onClick={completeRequest}
-          endIcon={<SendIcon />}>
-          Send
+      {errorMessage ? <ErrorModalWindow error={errorMessage} key={+key} /> : ""}
+      <ButtonGroup
+        variant="contained"
+        aria-label="outlined primary button group"
+        color="inherit"
+        sx={{ paddingTop: "20px", mb: "20px" }}
+      >
+        <Button onClick={completeRequest} color="primary">
+          <PlayArrow sx={{ fontSize: 30 }} />
         </Button>
-        <Box sx={{ textAlign: "left", pt: 1 }}>
-          <Button
-            onClick={() => {
-              setOpen(true);
-            }}>
-            Variables
-          </Button>
-        </Box>
-        <Grid container spacing={2}>
-          <RequestField setData={setData} />
-          {request.request ? (
-            <ErrorBoundary
-              FallbackComponent={ErrorFallbackComponent}
-              onReset={() =>
-                setRequest({
-                  request: "",
-                  variables: "",
-                  headers: "",
-                })
-              }>
-              <ResponseFieldWithApollo
-                responseText={request.request}
-                variables={request.variables}
-                headers={request.headers}
-                req={key}
-              />
-            </ErrorBoundary>
-          ) : (
-            ""
-          )}
-        </Grid>
-        <VariablesField
-          setVariables={setVariables}
-          open={open}
-          setOpenParent={setOpen}
+        <Schema />
+      </ButtonGroup>
+      <Grid
+        container
+        sx={{ position: "relative", width: "100%" }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
+        <RequestField
+          setData={setData}
           setHeaders={setHeaders}
+          setVariables={setVariables}
         />
-      </Container>
+
+        {request.request && (
+          <ErrorBoundary
+            FallbackComponent={ErrorFallbackComponent}
+            onReset={() =>
+              setRequest({
+                request: "",
+                variables: undefined,
+                headers: "",
+              })
+            }
+          >
+            <ResponseFieldWithApollo
+              responseText={request.request}
+              variables={request.variables}
+              headers={request.headers}
+              req={key}
+            />
+          </ErrorBoundary>
+        )}
+      </Grid>
     </>
   );
 }
