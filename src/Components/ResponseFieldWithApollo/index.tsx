@@ -6,6 +6,7 @@ import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { messError } from "../../apollo/client";
 import { ErrorModalWindow } from "../ErrorModalWindow";
+import Loader from "../Loader";
 
 interface IResponseField {
   responseText: string;
@@ -51,7 +52,11 @@ function ResponseFieldWithApollo({
   }
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Grid item md={6} sm={4} xs={4}>
+        <Loader />
+      </Grid>
+    );
   }
   if (error?.graphQLErrors) {
     const err = "Error" + error.message + "  \n" + messError.graphErr;

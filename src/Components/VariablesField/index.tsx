@@ -44,6 +44,8 @@ interface Props {
 export default function VariablesField(props: Props) {
   const { t } = useTranslation();
   const [value, setValue] = useState(0);
+  const [headers, setHeaders] = useState("");
+  const [variables, setVariables] = useState("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     event.stopPropagation();
@@ -86,6 +88,7 @@ export default function VariablesField(props: Props) {
               variant="standard"
               maxRows={5}
               minRows={5}
+              value={variables}
               sx={{
                 width: "100%",
                 "& .MuiInputBase-root": {
@@ -103,6 +106,7 @@ export default function VariablesField(props: Props) {
                 },
               }}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setVariables(event.target.value);
                 props.setVariables(event.target.value);
               }}
             />
@@ -115,6 +119,7 @@ export default function VariablesField(props: Props) {
               variant="standard"
               maxRows={5}
               minRows={5}
+              value={headers}
               sx={{
                 width: "100%",
                 "& .MuiInputBase-root": {
@@ -132,6 +137,7 @@ export default function VariablesField(props: Props) {
                 },
               }}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setHeaders(event.target.value);
                 props.setHeaders(event.target.value);
               }}
             />
