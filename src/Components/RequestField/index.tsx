@@ -6,11 +6,11 @@ import { get } from "react-hook-form";
 
 interface IrequestField {
   setData: Dispatch<SetStateAction<string>>;
-  getHeaders: Dispatch<SetStateAction<string>>;
-  getVariables: Dispatch<SetStateAction<string>>;
+  setHeaders: Dispatch<SetStateAction<string>>;
+  setVariables: Dispatch<SetStateAction<string>>;
 }
 
-function RequestField({ setData, getHeaders, getVariables }: IrequestField) {
+function RequestField({ setData, setHeaders, setVariables }: IrequestField) {
   // const [headers, setHeaders] = useState("");
   // const [variables, setVariables] = useState(``);
   const [open, setOpen] = useState(false);
@@ -58,10 +58,10 @@ function RequestField({ setData, getHeaders, getVariables }: IrequestField) {
           />
         </div>
         <VariablesField
-          setVariables={getVariables}
+          setVariables={setVariables}
+          setHeaders={setHeaders}
           open={open}
           setOpenParent={setOpen}
-          setHeaders={getHeaders}
         />
       </Grid>
     </>

@@ -18,7 +18,6 @@ const GraphIQL = () => {
   return (
     <Container>
       <GraphiQLField />
-      {/* <Schema /> */}
     </Container>
   );
 };

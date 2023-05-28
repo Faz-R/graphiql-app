@@ -19,17 +19,17 @@ interface IRequest {
 function GraphiQLField() {
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
+  const [variables, setVariables] = useState("");
   const [key, setKey] = useState(true);
   const [request, setRequest] = useState<IRequest>({
     request: "",
     variables: "",
     headers: "",
   });
-  const [variables, setVariables] = useState(``);
 
   const completeRequest = () => {
     setKey(!key);
-    setRequest({ request: data, variables, headers });
+    setRequest({ request: data, variables: variables, headers: headers });
   };
 
   return (
@@ -48,8 +48,8 @@ function GraphiQLField() {
       <Grid container sx={{ position: "relative", width: "100%" }}>
         <RequestField
           setData={setData}
-          getHeaders={setHeaders}
-          getVariables={setVariables}
+          setHeaders={setHeaders}
+          setVariables={setVariables}
         />
 
         {request.request ? (
