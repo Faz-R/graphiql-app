@@ -81,6 +81,7 @@ function ResponseFieldWithApollo({
             overflow: "hidden",
             overflowY: "auto",
             padding: "20px",
+            whiteSpace: "pre-wrap",
           }}
         >
           {JSON.stringify(data, null, 2)}

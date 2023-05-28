@@ -17,6 +17,7 @@ const SchemaNode: React.FC<SchemaField & { level: number }> = ({
   const { setSchema } = useContext(SchemaContext);
   return (
     <Accordion
+      disableGutters
       onClick={(e) => {
         e.stopPropagation();
         setSchema(type.name, level);

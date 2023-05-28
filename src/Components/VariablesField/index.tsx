@@ -49,7 +49,6 @@ export default function VariablesField(props: Props) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     event.stopPropagation();
     setValue(newValue);
-    setOpen(true);
   };
 
   const [isOpen, setOpen] = useState(false);
@@ -74,8 +73,8 @@ export default function VariablesField(props: Props) {
         >
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={handleChange}>
-              <Tab label={t("variables")} />
-              <Tab label={t("headers")} />
+              <Tab label={t("variables")} onClick={() => setOpen(true)} />
+              <Tab label={t("headers")} onClick={() => setOpen(true)} />
             </Tabs>
           </Box>
         </AccordionSummary>
