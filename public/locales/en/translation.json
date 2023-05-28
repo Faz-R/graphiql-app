@@ -21,5 +21,8 @@
   "variables": "variables",
   "headers": "headers",
   "schema": "schema",
-  "translate": "Перевести на"
+  "translate": "Перевести на",
+  "errorTitle": "Something went wrong",
+  "tryAgain": "Try again",
+  "validVariables": "Enter the valid variables"
 }

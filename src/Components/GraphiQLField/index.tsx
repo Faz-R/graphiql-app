@@ -8,6 +8,7 @@ import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
 import { PlayArrow } from "@mui/icons-material";
 import Schema from "../Schema";
 import { ErrorModalWindow } from "../ErrorModalWindow";
+import { useTranslation } from "react-i18next";
 
 interface IRequest {
   request: string;
@@ -16,6 +17,7 @@ interface IRequest {
 }
 
 function GraphiQLField() {
+  const { t } = useTranslation();
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
   const [variables, setVariables] = useState("");
@@ -34,7 +36,7 @@ function GraphiQLField() {
       setErrorMessage("");
       if (variables.trim()) varToJson = JSON.parse(variables);
     } catch (err) {
-      setErrorMessage("enter the valid variables");
+      setErrorMessage(`${t("validVariables")}`);
     }
     setRequest({ request: data, variables: varToJson, headers: headers });
   };
@@ -46,7 +48,8 @@ function GraphiQLField() {
         variant="contained"
         aria-label="outlined primary button group"
         color="inherit"
-        sx={{ paddingTop: "20px", mb: "20px" }}>
+        sx={{ paddingTop: "20px", mb: "20px" }}
+      >
         <Button onClick={completeRequest} color="primary">
           <PlayArrow sx={{ fontSize: 30 }} />
         </Button>
@@ -55,14 +58,15 @@ function GraphiQLField() {
       <Grid
         container
         sx={{ position: "relative", width: "100%" }}
-        columns={{ xs: 4, sm: 8, md: 12 }}>
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
         <RequestField
           setData={setData}
           setHeaders={setHeaders}
           setVariables={setVariables}
         />
 
-        {request.request ? (
+        {request.request && (
           <ErrorBoundary
             FallbackComponent={ErrorFallbackComponent}
             onReset={() =>
@@ -71,7 +75,8 @@ function GraphiQLField() {
                 variables: undefined,
                 headers: "",
               })
-            }>
+            }
+          >
             <ResponseFieldWithApollo
               responseText={request.request}
               variables={request.variables}
@@ -79,8 +84,6 @@ function GraphiQLField() {
               req={key}
             />
           </ErrorBoundary>
-        ) : (
-          ""
         )}
       </Grid>
     </>
