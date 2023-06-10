@@ -1,23 +1,22 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { Grid, Button, ButtonGroup } from "@mui/material";
 import RequestField from "../RequestField";
 import { DEF_VALUE_REQUEST } from "./constants";
-import { ErrorFallbackComponent } from "../ErrorFallbackComponent";
-import { ErrorBoundary } from "react-error-boundary";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
 import { PlayArrow } from "@mui/icons-material";
 import Schema from "../Schema";
-import { ErrorModalWindow } from "../ErrorModalWindow";
-import { useTranslation } from "react-i18next";
+import { toast, ToastContainer } from "react-toastify";
+import { DefaultContext } from "@apollo/client";
 
 interface IRequest {
   request: string;
   variables: object | undefined;
   headers: string;
 }
+export let headersForRequest: DefaultContext = {};
 
 function GraphiQLField() {
-  const { t } = useTranslation();
   const [data, setData] = useState(DEF_VALUE_REQUEST);
   const [headers, setHeaders] = useState("");
   const [variables, setVariables] = useState("");
@@ -27,23 +26,31 @@ function GraphiQLField() {
     variables: undefined,
     headers: "",
   });
-  const [errorMessage, setErrorMessage] = useState("");
   let varToJson: object | undefined;
+
+  const notify = (error: string): void => {
+    toast.error(error, {
+      position: toast.POSITION.TOP_RIGHT,
+      draggable: false,
+    });
+  };
 
   const completeRequest = () => {
     setKey(!key);
     try {
-      setErrorMessage("");
       if (variables.trim()) varToJson = JSON.parse(variables);
-    } catch (err) {
-      setErrorMessage(`${t("validVariables")}`);
+      if (headers.trim()) {
+        headersForRequest = JSON.parse(headers);
+      }
+      setRequest({ request: data, variables: varToJson, headers: headers });
+    } catch (error) {
+      notify((error as Error).message);
     }
-    setRequest({ request: data, variables: varToJson, headers: headers });
   };
 
   return (
     <>
-      {errorMessage ? <ErrorModalWindow error={errorMessage} key={+key} /> : ""}
+      <ToastContainer theme="dark" limit={3} autoClose={3000} />
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
@@ -67,23 +74,11 @@ function GraphiQLField() {
         />
 
         {request.request && (
-          <ErrorBoundary
-            FallbackComponent={ErrorFallbackComponent}
-            onReset={() =>
-              setRequest({
-                request: "",
-                variables: undefined,
-                headers: "",
-              })
-            }
-          >
-            <ResponseFieldWithApollo
-              responseText={request.request}
-              variables={request.variables}
-              headers={request.headers}
-              req={key}
-            />
-          </ErrorBoundary>
+          <ResponseFieldWithApollo
+            responseText={request.request}
+            variables={request.variables}
+            headers={request.headers}
+          />
         )}
       </Grid>
     </>

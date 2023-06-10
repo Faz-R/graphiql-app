@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import {
-  TextField,
   Tab,
   Tabs,
   Accordion,
@@ -10,6 +9,11 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { ExpandMore } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import CodeMirror from "@uiw/react-codemirror";
+import { customTheme } from "../../customTheme";
+import { json } from "@codemirror/lang-json";
+import client from "../../apollo/client";
+import { EditorView } from "@codemirror/view";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -79,66 +83,33 @@ export default function VariablesField(props: Props) {
             </Tabs>
           </Box>
         </AccordionSummary>
-        <AccordionDetails sx={{ width: "100%" }}>
+        <AccordionDetails
+          sx={{ width: "100%", height: "15vh", overflowY: "auto" }}
+        >
           <TabPanel value={value} index={0}>
-            <TextField
-              id="outlined-multiline-flexible"
-              multiline
-              focused
-              variant="standard"
-              maxRows={5}
-              minRows={5}
+            <CodeMirror
+              spellCheck={true}
+              autoFocus
               value={variables}
-              sx={{
-                width: "100%",
-                "& .MuiInputBase-root": {
-                  paddingLeft: "10px",
-                  height: "100%",
-                  borderRadius: 0,
-                  overflow: "hidden",
-                  overflowY: "auto",
-                },
-                "& .MuiInputBase-root::before": {
-                  display: "none",
-                },
-                "& .MuiInputBase-root::after": {
-                  display: "none",
-                },
-              }}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setVariables(event.target.value);
-                props.setVariables(event.target.value);
+              theme={customTheme({ settings: { gutterBackground: "#1e1e1e" } })}
+              extensions={[json(), EditorView.lineWrapping]}
+              onChange={(value): void => {
+                setVariables(value);
+                props.setVariables(value);
               }}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TextField
-              id="outlined-multiline-flexible"
-              multiline
-              focused
-              variant="standard"
-              maxRows={5}
-              minRows={5}
+            <CodeMirror
+              spellCheck={true}
+              autoFocus
               value={headers}
-              sx={{
-                width: "100%",
-                "& .MuiInputBase-root": {
-                  paddingLeft: "10px",
-                  height: "100%",
-                  borderRadius: 0,
-                  overflow: "hidden",
-                  overflowY: "auto",
-                },
-                "& .MuiInputBase-root::before": {
-                  display: "none",
-                },
-                "& .MuiInputBase-root::after": {
-                  display: "none",
-                },
-              }}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setHeaders(event.target.value);
-                props.setHeaders(event.target.value);
+              theme={customTheme({ settings: { gutterBackground: "#1e1e1e" } })}
+              extensions={[json(), EditorView.lineWrapping]}
+              onChange={(value): void => {
+                setHeaders(value);
+                client.resetStore();
+                props.setHeaders(value);
               }}
             />
           </TabPanel>

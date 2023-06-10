@@ -1,7 +1,13 @@
-import { TextField, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { DEF_VALUE_REQUEST } from "../GraphiQLField/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import VariablesField from "../VariablesField";
+import { graphql } from "cm6-graphql";
+
+import CodeMirror from "@uiw/react-codemirror";
+import { schema } from "../Schema/rickAndMortySchema";
+import { customTheme } from "../../customTheme";
+import { EditorView } from "@codemirror/view";
 
 interface IrequestField {
   setData: Dispatch<SetStateAction<string>>;
@@ -11,6 +17,7 @@ interface IrequestField {
 
 function RequestField({ setData, setHeaders, setVariables }: IrequestField) {
   const [open, setOpen] = useState(false);
+  const [request, setRequest] = useState(DEF_VALUE_REQUEST);
   return (
     <>
       <Grid
@@ -30,33 +37,22 @@ function RequestField({ setData, setHeaders, setVariables }: IrequestField) {
           },
         }}
       >
-        <div style={{ flex: "3 1 0%", overflowY: "auto" }}>
-          <TextField
-            id="outlined-multiline-flexible"
-            fullWidth
-            multiline
-            focused
-            variant="filled"
-            defaultValue={DEF_VALUE_REQUEST}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setData(event.target.value);
-            }}
-            sx={{
-              height: "100%",
-              "& .MuiInputBase-root": {
-                padding: "20px",
-                borderRadius: 0,
-                height: "100%",
-                overflowY: "auto",
-                display: "flex",
-                alignItems: "flex-start",
-              },
-              "& .MuiInputBase-root::before": {
-                display: "none",
-              },
-              "& .MuiInputBase-root::after": {
-                display: "none",
-              },
+        <div
+          style={{
+            flex: "3 1 0%",
+            overflowY: "auto",
+            backgroundColor: "rgba(255, 255, 255, 0.09)",
+          }}
+        >
+          <CodeMirror
+            spellCheck={true}
+            autoFocus
+            value={request}
+            theme={customTheme({})}
+            extensions={[graphql(schema), EditorView.lineWrapping]}
+            onChange={(value): void => {
+              setRequest(value);
+              setData(value);
             }}
           />
         </div>

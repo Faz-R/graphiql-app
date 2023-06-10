@@ -1,17 +1,25 @@
-import { Alert, Container, Snackbar } from "@mui/material";
+import { Container } from "@mui/material";
 import Form from "../../Components/Form";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, registerWithEmailAndPassword } from "../../firebase";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [user] = useAuthState(auth);
+
+  const notify = (error: string): void => {
+    toast.error(error, {
+      position: toast.POSITION.TOP_RIGHT,
+      draggable: false,
+    });
+  };
+
   const handleRegister = (email: string, password: string) => {
     registerWithEmailAndPassword(email, password)
       .then(() => {
@@ -19,17 +27,11 @@ const SignUp = () => {
       })
       .catch((error: Error) => {
         if (error.message.includes("email-already-in-use")) {
-          setErrorMessage(`${t("emailInUse")}`);
+          notify(`${t("emailInUse")}`);
         } else {
-          setErrorMessage(error.message);
+          notify(error.message);
         }
-        setOpen(true);
       });
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setErrorMessage("");
   };
 
   useEffect(() => {
@@ -38,14 +40,12 @@ const SignUp = () => {
     }
   });
   return (
-    <Container sx={{ display: "flex", justifyContent: "center" }}>
-      <Form title={t("signUp")} sendData={handleRegister} />
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-    </Container>
+    <>
+      <ToastContainer theme="dark" limit={3} autoClose={3000} />
+      <Container sx={{ display: "flex", justifyContent: "center" }}>
+        <Form title={t("signUp")} sendData={handleRegister} />
+      </Container>
+    </>
   );
 };
 

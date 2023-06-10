@@ -1,55 +1,53 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react-hooks/exhaustive-deps*/
-import { Grid, Paper } from "@mui/material";
-import "./index.css";
-import { gql, DefaultContext, useLazyQuery } from "@apollo/client";
-import { useEffect } from "react";
-import { messError } from "../../apollo/client";
-import { ErrorModalWindow } from "../ErrorModalWindow";
+import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 import Loader from "../Loader";
+import CodeMirror from "@uiw/react-codemirror";
+import { customTheme } from "../../customTheme";
+import { json } from "@codemirror/lang-json";
+import { ToastContainer, toast } from "react-toastify";
+import { graphqlRequest } from "../../utils/graphqlRequest";
+import { EditorView } from "@codemirror/view";
 
 interface IResponseField {
   responseText: string;
   variables: object | undefined;
   headers: string;
-  req: boolean;
 }
-
-export let headersForRequest: DefaultContext = {};
 
 function ResponseFieldWithApollo({
   responseText,
   variables,
   headers,
-  req,
 }: IResponseField) {
-  const DATA_RESPONSE = gql`
-    ${responseText}
-  `;
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const notify = (error: string): void => {
+    toast.error(error, {
+      position: toast.POSITION.TOP_RIGHT,
+      draggable: false,
+    });
+  };
 
   useEffect(() => {
-    refetch();
-  }, [headers, variables]);
-
-  useEffect(() => {
-    getResponse();
-  }, [req]);
-
-  const [getResponse, { loading, error, data, refetch }] = useLazyQuery(
-    DATA_RESPONSE,
-    {
-      variables: variables,
-      errorPolicy: "all",
-    }
-  );
-
-  try {
-    if (headers.trim()) headersForRequest = JSON.parse(headers);
-    else headersForRequest = {};
-  } catch (err) {
-    const errorMessage = "enter the valid headers";
-    return <ErrorModalWindow error={errorMessage} key={+req} />;
-  }
+    setLoading(true);
+    graphqlRequest(responseText, variables)
+      .then((data) => {
+        setResponse(data.data);
+      })
+      .catch((error) => {
+        if (error.networkError) {
+          setResponse(error.networkError.result.errors[0]);
+          notify(error.networkError.result.errors[0].message);
+        } else {
+          setResponse(error);
+          notify((error as Error).message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [responseText, variables, headers]);
 
   if (loading) {
     return (
@@ -58,28 +56,24 @@ function ResponseFieldWithApollo({
       </Grid>
     );
   }
-  if (error?.graphQLErrors) {
-    const err = "Error" + error.message + "  \n" + messError.graphErr;
-    return <ErrorModalWindow error={err} key={+req} />;
-  }
-
-  if (error) {
-    const err = "Error" + error.message + "  \n" + messError.netErr;
-    return <ErrorModalWindow error={err} key={+req} />;
-  }
 
   return (
-    <Grid item md={6} sm={4} xs={4}>
-      {data && (
-        <Paper
-          component="pre"
+    <>
+      <ToastContainer theme="dark" limit={3} autoClose={3000} />
+      {response && (
+        <Grid
+          item
+          md={6}
+          sm={4}
+          xs={4}
           sx={{
             m: 0,
             maxHeight: "70vh",
             overflow: "hidden",
             overflowY: "auto",
-            padding: "20px",
             whiteSpace: "pre-wrap",
+            backgroundColor: "#272727",
+            position: "relative",
             "@media (max-width: 600px)": {
               maxHeight: "50vh",
               height: "50vh",
@@ -88,10 +82,19 @@ function ResponseFieldWithApollo({
             },
           }}
         >
-          {JSON.stringify(data, null, 2)}
-        </Paper>
+          <CodeMirror
+            spellCheck={true}
+            autoFocus
+            value={JSON.stringify(response, null, 2)}
+            theme={customTheme({})}
+            readOnly
+            extensions={[json(), EditorView.lineWrapping]}
+            maxWidth="100%"
+            style={{ flexShrink: 1 }}
+          />
+        </Grid>
       )}
-    </Grid>
+    </>
   );
 }
 
