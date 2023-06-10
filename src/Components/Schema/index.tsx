@@ -7,7 +7,7 @@ import { Button, Drawer } from "@mui/material";
 import Loader from "../Loader";
 import { useTranslation } from "react-i18next";
 
-const SchemaList = lazy(() => import("./SchemaList"));
+export const SchemaList = lazy(() => import("./SchemaList"));
 
 const Schema = () => {
   const { t } = useTranslation();

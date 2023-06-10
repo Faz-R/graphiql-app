@@ -1,9 +1,8 @@
-export const DEF_VALUE_REQUEST = `query char($page: Int, $filter: FilterCharacter){
-  characters(page: $page, filter: $filter){
+export const DEF_VALUE_REQUEST = `query{
+  characters{
     results{
       id
       name
-      type
     }    
   }
 }`;
