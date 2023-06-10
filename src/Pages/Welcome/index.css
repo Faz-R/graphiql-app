@@ -1,0 +1,11 @@
+.top {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(/src/assets/img/graph-wash.png) repeat 50%;
+}
+
+.top__logo {
+  width: 100%;
+}
