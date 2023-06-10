@@ -85,7 +85,7 @@ const Form: FC<FormProps> = ({ title, sendData, isAuth }) => {
             required: true,
             pattern: {
               value: REGEXP_PASSWORD,
-              message: `${t("passwordError")}`,
+              message: t("passwordError"),
             },
           })}
           endAdornment={

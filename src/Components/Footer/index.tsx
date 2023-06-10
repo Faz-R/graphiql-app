@@ -56,7 +56,7 @@ const Footer = () => {
                   color="inherit"
                   fontSize="small"
                   sx={{ verticalAlign: "top" }}
-                ></GitHub>
+                />
                 {` `}
                 <Link
                   href="https://github.com/Faz-R"

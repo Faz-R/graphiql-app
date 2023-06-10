@@ -25,18 +25,17 @@ const Header = () => {
 
   const [anchor, setAnchor] = useState(false);
 
-  const toggleDrawer =
-    () => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
+  const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
+    }
 
-      setAnchor(false);
-    };
+    setAnchor(false);
+  };
 
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
@@ -45,20 +44,16 @@ const Header = () => {
   const navigate = useNavigate();
   useEffect(() => {
     window.onscroll = () => {
-      if (window.scrollY > 0) {
-        setScroll(true);
-      } else {
-        setScroll(false);
-      }
+      setScroll(window.scrollY > 0);
     };
   }, []);
 
   return (
     <>
       <Drawer
-        anchor={"right"}
+        anchor="right"
         open={anchor}
-        onClose={toggleDrawer()}
+        onClose={toggleDrawer}
         sx={{
           "& .MuiDrawer-paper": {
             padding: "20px",
@@ -77,7 +72,7 @@ const Header = () => {
             top: "15px",
             left: "15px",
           }}
-          onClick={toggleDrawer()}
+          onClick={toggleDrawer}
         />
         {user ? (
           <>
@@ -88,7 +83,7 @@ const Header = () => {
                 gap: "5px",
               }}
             >
-              <MailOutline></MailOutline>
+              <MailOutline />
               {user.email}
             </Typography>
             <Divider sx={{ width: "100%" }} />
@@ -96,7 +91,7 @@ const Header = () => {
               component={Link}
               to="/graph"
               underline="none"
-              onClick={toggleDrawer()}
+              onClick={toggleDrawer}
             >
               {t("mainPage")}
             </MUILink>
@@ -105,7 +100,7 @@ const Header = () => {
               color="inherit"
               sx={{ cursor: "pointer" }}
               onClick={() => {
-                toggleDrawer();
+                toggleDrawer;
                 logout();
               }}
             >
@@ -120,7 +115,7 @@ const Header = () => {
               component={Link}
               to={"/auth"}
               sx={{ cursor: "pointer" }}
-              onClick={toggleDrawer()}
+              onClick={toggleDrawer}
             >
               {t("signIn")}
             </MUILink>
@@ -130,7 +125,7 @@ const Header = () => {
               component={Link}
               to={"/register"}
               sx={{ cursor: "pointer" }}
-              onClick={toggleDrawer()}
+              onClick={toggleDrawer}
             >
               {t("signUp")}
             </MUILink>
@@ -196,7 +191,7 @@ const Header = () => {
                       mr: "20px",
                     }}
                   >
-                    <MailOutline></MailOutline>
+                    <MailOutline />
                     {user.email}
                   </Typography>
                   <ButtonGroup

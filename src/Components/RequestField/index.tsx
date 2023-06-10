@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { DEF_VALUE_REQUEST } from "../GraphiQLField/constants";
+import { DEFAULT_QUERY } from "../GraphiQLField/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import VariablesField from "../VariablesField";
 import { graphql } from "cm6-graphql";
@@ -9,15 +9,15 @@ import { schema } from "../Schema/rickAndMortySchema";
 import { customTheme } from "../../customTheme";
 import { EditorView } from "@codemirror/view";
 
-interface IrequestField {
+interface RequestField {
   setData: Dispatch<SetStateAction<string>>;
   setHeaders: Dispatch<SetStateAction<string>>;
   setVariables: Dispatch<SetStateAction<string>>;
 }
 
-function RequestField({ setData, setHeaders, setVariables }: IrequestField) {
+function RequestField({ setData, setHeaders, setVariables }: RequestField) {
   const [open, setOpen] = useState(false);
-  const [request, setRequest] = useState(DEF_VALUE_REQUEST);
+  const [request, setRequest] = useState(DEFAULT_QUERY);
   return (
     <>
       <Grid

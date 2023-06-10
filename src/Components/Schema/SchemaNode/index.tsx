@@ -8,12 +8,19 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import SchemaContext, { type SchemaField } from "../context/SchemaContext";
 
+interface ShemaNodeProps {
+  name: string;
+  description: string;
+  type: { name: string | null; ofType: { name: string } | null };
+  level: number;
+}
+
 const SchemaNode: React.FC<SchemaField & { level: number }> = ({
   name,
   description,
   type,
   level,
-}) => {
+}: ShemaNodeProps) => {
   const { setSchema } = useContext(SchemaContext);
   return (
     <Accordion

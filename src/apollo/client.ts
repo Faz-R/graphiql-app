@@ -6,16 +6,6 @@ const httpLink = createHttpLink({
   uri: "https://rickandmortyapi.com/graphql",
 });
 
-type MessErr = {
-  graphErr: string;
-  netErr: string;
-};
-
-export const messError: MessErr = {
-  graphErr: "",
-  netErr: "",
-};
-
 const setHeaders = setContext(() => {
   return {
     headers: {
@@ -32,4 +22,3 @@ const client = new ApolloClient({
 });
 
 export default client;
-

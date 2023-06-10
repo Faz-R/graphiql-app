@@ -5,10 +5,15 @@ import SchemaNode from "../SchemaNode";
 import Loader from "../../Loader";
 import type { SchemaData } from "../context/SchemaContext";
 
+interface ShemaItemProps {
+  query: string;
+  level: number;
+}
+
 const SchemaItem: React.FC<{ query: string; level: number }> = ({
   query,
   level,
-}) => {
+}: ShemaItemProps) => {
   const { loading, data } = useQuery(SCHEMA, {
     variables: { query },
   });

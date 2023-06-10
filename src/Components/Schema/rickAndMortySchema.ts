@@ -1,5 +1,5 @@
-import { buildASTSchema } from 'graphql';
-import gql from 'graphql-tag';
+import { buildASTSchema } from "graphql";
+import gql from "graphql-tag";
 
 const typeDefs = gql`
   type Query {
