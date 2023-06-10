@@ -5,9 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {
-  getFirestore,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -21,12 +19,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   await signInWithEmailAndPassword(auth, email, password);
 };
 
-const registerWithEmailAndPassword = async (email: string, password: string) => {
+const registerWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   await createUserWithEmailAndPassword(auth, email, password);
 };
 

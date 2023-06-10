@@ -9,13 +9,13 @@ import { graphqlRequest } from "../../utils/graphqlRequest";
 import { EditorView } from "@codemirror/view";
 
 interface IResponseField {
-  responseText: string;
+  request: string;
   variables: object | undefined;
   headers: string;
 }
 
 function ResponseFieldWithApollo({
-  responseText,
+  request,
   variables,
   headers,
 }: IResponseField) {
@@ -31,7 +31,7 @@ function ResponseFieldWithApollo({
 
   useEffect(() => {
     setLoading(true);
-    graphqlRequest(responseText, variables)
+    graphqlRequest(request, variables)
       .then((data) => {
         setResponse(data.data);
       })
@@ -47,7 +47,7 @@ function ResponseFieldWithApollo({
       .finally(() => {
         setLoading(false);
       });
-  }, [responseText, variables, headers]);
+  }, [request, variables, headers]);
 
   if (loading) {
     return (

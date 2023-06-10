@@ -1,15 +1,14 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { Grid, Button, ButtonGroup } from "@mui/material";
 import RequestField from "../RequestField";
-import { DEF_VALUE_REQUEST } from "./constants";
+import { DEFAULT_QUERY } from "./constants";
 import ResponseFieldWithApollo from "../ResponseFieldWithApollo";
 import { PlayArrow } from "@mui/icons-material";
 import Schema from "../Schema";
 import { toast, ToastContainer } from "react-toastify";
 import { DefaultContext } from "@apollo/client";
 
-interface IRequest {
+interface Request {
   request: string;
   variables: object | undefined;
   headers: string;
@@ -17,16 +16,15 @@ interface IRequest {
 export let headersForRequest: DefaultContext = {};
 
 function GraphiQLField() {
-  const [data, setData] = useState(DEF_VALUE_REQUEST);
+  const [data, setData] = useState(DEFAULT_QUERY);
   const [headers, setHeaders] = useState("");
   const [variables, setVariables] = useState("");
   const [key, setKey] = useState(true);
-  const [request, setRequest] = useState<IRequest>({
+  const [request, setRequest] = useState<Request>({
     request: "",
     variables: undefined,
     headers: "",
   });
-  let varToJson: object | undefined;
 
   const notify = (error: string): void => {
     toast.error(error, {
@@ -37,6 +35,7 @@ function GraphiQLField() {
 
   const completeRequest = () => {
     setKey(!key);
+    let varToJson: object | undefined;
     try {
       if (variables.trim()) varToJson = JSON.parse(variables);
       if (headers.trim()) {
@@ -75,7 +74,7 @@ function GraphiQLField() {
 
         {request.request && (
           <ResponseFieldWithApollo
-            responseText={request.request}
+            request={request.request}
             variables={request.variables}
             headers={request.headers}
           />
